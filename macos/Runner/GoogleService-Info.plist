@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDXPPcRIyZBylCLh1MmDk2MjyMAJV2Hmpc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>864473940850</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.kollektor.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>kollektor-1cf05</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kollektor-1cf05.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:864473940850:ios:7076e62bd25d0573bb93eb</string>
+	<key>DATABASE_URL</key>
+	<string>https://kollektor-1cf05-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

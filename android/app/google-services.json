@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "847496649173",
+    "project_id": "kollektor-839aa",
+    "storage_bucket": "kollektor-839aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847496649173:android:1d2746a0e963f6beed855c",
+        "android_client_info": {
+          "package_name": "com.example.kollektor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFOepYxMqLRS_GekgyVQECdBV9oXMpago"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
