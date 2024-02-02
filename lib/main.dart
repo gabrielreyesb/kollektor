@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kollektor/screens/pruebas.dart';
+import 'package:kollektor/screens/pruebas2.dart';
 
 import 'firebase_options.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Collektor',
       initialRoute: '/',
       routes: {
-        '/': (context) => const Pruebas(),
+        '/': (context) => const Pruebas2(),
         //'/add': (context) => const AddAlbumScreen(),
       },
     );

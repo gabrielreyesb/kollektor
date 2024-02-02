@@ -50,6 +50,8 @@ class DefaultFirebaseOptions {
     projectId: 'kollektor-839aa',
     authDomain: 'kollektor-839aa.firebaseapp.com',
     storageBucket: 'kollektor-839aa.appspot.com',
+    databaseURL: 'https://kollektor-839aa.firebaseio.com',
+    measurementId: 'G-H7QDV3XWKZ'
   );
 
   static const FirebaseOptions android = FirebaseOptions(
