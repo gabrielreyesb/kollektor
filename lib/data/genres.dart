@@ -5,7 +5,7 @@ class Genres {
     Genre(
       id: '1',
       name: 'Progresivo',
-      isChecked: false,
+      isChecked: true,
     ),
     Genre(
       id: '2',

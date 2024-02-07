@@ -9,6 +9,12 @@ class Pruebas extends StatefulWidget {
 
 class _PruebasState extends State<Pruebas> {
   String selectedGenre = 'Rock progresivo';
+  List<Map> availableGenres = [
+    {'id': '1', 'name': 'Progresivo', 'isChecked': false},
+    {'id': '2', 'name': 'Metal', 'isChecked': false},
+    {'id': '3', 'name': 'Jazz', 'isChecked': false},
+    {'id': '4', 'name': 'Pop', 'isChecked': false},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,42 +22,35 @@ class _PruebasState extends State<Pruebas> {
       appBar: AppBar(
         title: const Text('Pruebas'),
       ),
-      body: GenreListView(),
-    );
-  }
-}
-
-class GenreListView extends StatelessWidget {
-  // Simulating an asynchronous data fetching process
-  Future<List<String>> fetchData() async {
-    // Simulating network latency
-    await Future.delayed(Duration(seconds: 3));
-    return List.generate(10, (index) => 'Item $index');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<String>>(
-      future: fetchData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // If the Future is still running, show a loading indicator
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          // If we ran into an error, display it
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          // When data is fetched successfully, display the ListView
-          return ListView.builder(
-            itemCount: snapshot.data?.length ?? 0,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data![index]),
-              );
-            },
-          );
-        }
-      },
+      body: FutureBuilder(
+        future: getGenres(),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            final availableGenres = snapshot.data;
+            return ListView.builder(
+              itemCount: availableGenres?.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  key: ValueKey(availableGenres?[index]['id']),
+                  value: availableGenres?[index]['isChecked'],
+                  title: Text(availableGenres?[index]['name']),
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        availableGenres[index]['isChecked'] = value;
+                      },
+                    );
+                  },
+                );
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
+      ),
     );
   }
 }

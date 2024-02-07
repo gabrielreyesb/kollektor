@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kollektor/screens/pruebas.dart';
-import 'package:kollektor/screens/pruebas2.dart';
+import 'package:kollektor/screens/pruebas_menu_lateral.dart';
 
 import 'firebase_options.dart';
 
@@ -18,11 +17,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      /* theme: ThemeData(
+        primaryColor: Colors.white,
+        hintColor: Colors.yellow,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ), */
       debugShowCheckedModeBanner: false,
-      title: 'Collektor',
+      title: 'Kollektor',
       initialRoute: '/',
       routes: {
         '/': (context) => const Pruebas2(),
+        '/': (context) => const PruebasMenuLateral(),
         //'/add': (context) => const AddAlbumScreen(),
       },
     );
