@@ -19,6 +19,7 @@ gem 'httparty'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
+  gem 'sqlite3', '>= 1.4'
 end
 
 group :development do
@@ -28,4 +29,8 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+end
+
+group :production do
+  gem 'pg'
 end
