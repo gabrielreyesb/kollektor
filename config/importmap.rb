@@ -6,6 +6,7 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 
 # Pin your custom JavaScript modules
 pin "application", preload: true
+pin "controllers", to: "controllers/index.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
 
 # Add Bootstrap and its dependencies
