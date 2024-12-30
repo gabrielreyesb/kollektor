@@ -15,3 +15,7 @@ application.register("genre-filter", GenreFilterController)
 // Eager load all controllers defined in the import map under controllers/**/*_controller
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
 eagerLoadControllersFrom("controllers", application)
+
+// Uncomment if you have controllers in the main javascript directory
+// import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
+// eagerLoadControllersFrom("../controllers", application)
