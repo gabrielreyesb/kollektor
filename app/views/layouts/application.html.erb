@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kollektor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <nav class="sidebar bg-primary">
+        <div style="padding: 12px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+          <%= image_tag "logo.png", style: "height: 32px; width: auto; display: inline-block;" %>
+        </div>
+        <hr>
+
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <%= link_to root_path, 
+                class: "nav-link", 
+                style: "
+                  color: white; 
+                  padding: 0.6rem 0.75rem; 
+                  display: block;
+                  text-decoration: none;
+                  #{current_page?(root_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+              <i class="bi bi-house-door me-2"></i>Home
+            <% end %>
+          </li>
+          <li style="width: 100%; padding: 0.6rem 0.75rem;">
+            <div class="form-group" data-controller="filter">
+              <%= select_tag :genre_id, 
+                  options_for_select([
+                    ["All Genres", ""], 
+                    *(@filtered_genres || Genre.order(:name)).map { |g| [g.name, g.id] }
+                  ], params[:genre_id]),
+                  class: "form-select bg-transparent text-white border-white",
+                  style: "option { color: black; }",
+                  data: { 
+                    action: "change->filter#change",
+                    filter_type_value: "genre_id"
+                  } %>
+            </div>
+          </li>
+          <li style="width: 100%; padding: 0.6rem 0.75rem;">
+            <div class="form-group" data-controller="filter">
+              <%= select_tag :author_id,
+                  options_for_select([
+                    ["All Authors", ""], 
+                    *(@filtered_authors || Author.order(:name)).map { |a| [a.name, a.id] }
+                  ], params[:author_id]),
+                  class: "form-select bg-transparent text-white border-white",
+                  style: "option { color: black; }",
+                  data: { 
+                    action: "change->filter#change",
+                    filter_type_value: "author_id"
+                  } %>
+            </div>
+          </li>
+          <li style="width: 100%; padding: 0.6rem 0.75rem;">
+            <div class="form-group" data-controller="filter">
+              <%= select_tag :album_id,
+                  options_for_select([
+                    ["All Albums", ""], 
+                    *(@filtered_albums || Album.order(:name)).map { |a| [a.name, a.id] }
+                  ], params[:album_id]),
+                  class: "form-select bg-transparent text-white border-white",
+                  style: "option { color: black; }",
+                  data: { 
+                    action: "change->filter#change",
+                    filter_type_value: "album_id"
+                  } %>
+            </div>
+          </li>
+          <li style="width: 100%; padding: 0.6rem 0.75rem;">
+            <div class="form-check form-switch" data-controller="display">
+              <input class="form-check-input bg-white" 
+                     type="checkbox" 
+                     id="showCardInfo" 
+                     checked
+                     data-action="change->display#toggle">
+              <label class="form-check-label text-white" for="showCardInfo">
+                Card information
+              </label>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Floating Action Button -->
+        <div class="floating-action-btn" style="
+          position: fixed;
+          right: 2rem;
+          top: 2rem;
+          z-index: 1040;">
+          
+          <div class="dropdown">
+            <button class="btn btn-primary rounded-circle shadow-sm" 
+                    type="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false"
+                    style="width: 48px; height: 48px;">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li>
+                <%= link_to genres_path, class: "dropdown-item" do %>
+                  <i class="bi bi-music-note-list me-2"></i>Manage Genres
+                <% end %>
+              </li>
+              <li>
+                <%= link_to authors_path, class: "dropdown-item" do %>
+                  <i class="bi bi-person me-2"></i>Manage Authors
+                <% end %>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <%= link_to albums_path, class: "dropdown-item" do %>
+                  <i class="bi bi-disc me-2"></i>Manage Albums
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <%= yield %>
+      </main>
+    </div>
+  </body>
+</html>

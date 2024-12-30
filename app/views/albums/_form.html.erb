@@ -1,0 +1,87 @@
+<%= form_with(model: album, class: "mb-4") do |form| %>
+  <% if album.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(album.errors.count, "error") %> prohibited this album from being saved:</h2>
+      <ul>
+        <% album.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div data-controller="musicbrainz genre-filter"
+           data-musicbrainz-target="container">
+        <div class="mb-3">
+          <%= form.label :genre_id, "Genre", class: "form-label" %>
+          <%= form.collection_select :genre_id, @genres, :id, :name, 
+              { prompt: "Select a genre" }, 
+              { class: "form-select",
+                data: { action: "change->genre-filter#filterAuthors" } } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :author_id, "Author", class: "form-label" %>
+          <div class="input-group">
+            <%= form.collection_select :author_id, @authors, :id, :name, 
+                { prompt: "Select an author" }, 
+                { class: "form-select",
+                  data: { genre_filter_target: "authorSelect" } } %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :name, class: "form-label" %>
+          <div class="input-group">
+            <%= form.text_field :name, class: "form-control" %>
+            <button type="button" class="btn btn-secondary" 
+                    data-action="musicbrainz#fetchInfo">
+              <i class="bi bi-search me-1"></i>Search Info
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :year, class: "form-label" %>
+          <%= form.number_field :year, 
+              class: "form-control",
+              min: 1900,
+              max: Time.current.year,
+              data: { 
+                musicbrainz_target: "yearField"
+              },
+              placeholder: "Enter year between 1900 and #{Time.current.year}" %>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: "form-label" %>
+        <%= form.text_area :description, class: "form-control", rows: 5 %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :cover_image, "Album Cover", class: "form-label" %>
+        <% if album.persisted? && album.cover_image.attached? %>
+          <div class="mb-2">
+            <%= image_tag album.cover_image, class: "img-fluid rounded" %>
+          </div>
+        <% else %>
+          <div class="mb-2">
+            <img class="img-fluid rounded" style="display: none;">
+          </div>
+        <% end %>
+        <%= form.file_field :cover_image, class: "form-control", 
+            accept: "image/png,image/jpeg,image/jpg" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", albums_path, class: "btn btn-light ms-2" %>
+  </div>
+<% end %> 

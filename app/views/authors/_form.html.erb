@@ -1,0 +1,58 @@
+<%= form_with(model: author, class: "mb-4") do |form| %>
+  <% if author.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(author.errors.count, "error") %> prohibited this author from being saved:</h2>
+      <ul>
+        <% author.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :genre_id, "Genre", class: "form-label" %>
+        <%= form.collection_select :genre_id, @genres, :id, :name, 
+            { prompt: "Select a genre" }, 
+            { class: "form-select" } %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :country_id, "Country", class: "form-label" %>
+        <%= form.collection_select :country_id, @countries, :id, :name, 
+            { prompt: "Select a country" }, 
+            { class: "form-select" } %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: "form-label" %>
+        <%= form.text_area :description, class: "form-control", rows: 5 %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :image, class: "form-label" %>
+        <% if author.image.attached? %>
+          <div class="mb-2">
+            <%= image_tag author.image, class: "img-fluid rounded" %>
+          </div>
+        <% end %>
+        <%= form.file_field :image, class: "form-control", 
+            accept: "image/png,image/jpeg,image/jpg" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", authors_path, class: "btn btn-light ms-2" %>
+  </div>
+<% end %> 
