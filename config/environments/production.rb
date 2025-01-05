@@ -21,7 +21,7 @@ Kollektor::Application.configure do
 
   # Enable serving of static files
   config.public_file_server.enabled = true
-  
-  # Do not fallback to assets pipeline if a precompiled asset is missed
+  config.serve_static_files = true
   config.assets.compile = false
+  config.assets.digest = true
 end
