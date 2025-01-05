@@ -1,10 +1,10 @@
-import { application } from "controllers/application"
+import { application } from "./application.js"
 
-import AlertController from "controllers/alert_controller.js"
-import FilterController from "controllers/filter_controller.js"
-import SidebarController from "controllers/sidebar_controller.js"
-import DisplayController from "controllers/display_controller.js"
-import GenreFilterController from "controllers/genre_filter_controller.js"
+import AlertController from "./alert_controller.js"
+import FilterController from "./filter_controller.js"
+import SidebarController from "./sidebar_controller.js"
+import DisplayController from "./display_controller.js"
+import GenreFilterController from "./genre_filter_controller.js"
 
 application.register("alert", AlertController)
 application.register("filter", FilterController)
