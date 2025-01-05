@@ -18,4 +18,10 @@ Kollektor::Application.configure do
   config.i18n.fallbacks = true
   config.active_support.report_deprecations = false
   config.active_record.dump_schema_after_migration = false
+
+  # Enable serving of static files
+  config.public_file_server.enabled = true
+  
+  # Do not fallback to assets pipeline if a precompiled asset is missed
+  config.assets.compile = false
 end

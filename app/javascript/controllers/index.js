@@ -1,13 +1,13 @@
-// Import and register all your controllers from the importmap via controllers/**/*_controller
-import { application } from "./application"
-import FilterController from "./filter_controller"
-import AlertController from "./alert_controller"
-import SidebarController from "./sidebar_controller"
-import DisplayController from "./display_controller"
-import GenreFilterController from "./genre_filter_controller"
+import { application } from "controllers/application"
 
-application.register("filter", FilterController)
+import AlertController from "controllers/alert_controller"
+import FilterController from "controllers/filter_controller"
+import SidebarController from "controllers/sidebar_controller"
+import DisplayController from "controllers/display_controller"
+import GenreFilterController from "controllers/genre_filter_controller"
+
 application.register("alert", AlertController)
+application.register("filter", FilterController)
 application.register("sidebar", SidebarController)
 application.register("display", DisplayController)
 application.register("genre-filter", GenreFilterController)
