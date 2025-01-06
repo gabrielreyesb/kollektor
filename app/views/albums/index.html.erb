@@ -7,15 +7,15 @@
   </div>
 
   <% if @albums.any? %>
-    <div class="row g-4">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
       <% @albums.each do |album| %>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="col">
           <div class="card h-100">
             <% if album.cover_image.attached? %>
               <%= image_tag album.cover_image, class: "card-img-top", style: "aspect-ratio: 1; object-fit: cover;" %>
             <% else %>
               <div class="bg-light d-flex align-items-center justify-content-center" style="aspect-ratio: 1;">
-                <i class="bi bi-disc text-muted" style="font-size: 4rem;"></i>
+                <i class="bi bi-disc text-muted" style="font-size: 2rem;"></i>
               </div>
             <% end %>
             

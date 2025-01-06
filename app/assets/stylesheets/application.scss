@@ -151,7 +151,7 @@
 
 .card-body {
   transition: padding 0.2s ease;
-  padding: 1.25rem;
+  padding: 0.35rem;
 }
 
 .card-info {
@@ -247,15 +247,15 @@
 
 /* Dark mode colors */
 :root {
-  --dark-bg: #121212;
-  --dark-card: #1e1e1e;
-  --dark-hover: #2d2d2d;
+  --dark-bg: #111b21;
+  --dark-card: #1f2c33;
+  --dark-hover: #2a3942;
   --dark-text: #ffffff;
-  --dark-text-muted: #a0a0a0;
+  --dark-text-muted: #8696a0;
   --dark-border: rgba(255, 255, 255, 0.1);
-  --primary-color: #1a1a2e;
-  --primary-dark: #16213e;
-  --primary-gradient: linear-gradient(145deg, #1a1a2e, #16213e);
+  --primary-color: #202c33;
+  --primary-dark: #111b21;
+  --primary-gradient: linear-gradient(145deg, #202c33, #111b21);
 }
 
 body {
@@ -306,8 +306,13 @@ body {
 }
 
 .btn-outline-danger {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+  
   &:hover {
+    background-color: #ff6b6b;
     color: white;
+    border-color: #ff6b6b;
   }
 }
 
@@ -325,4 +330,38 @@ body {
 /* Dark mode navbar */
 .navbar-dark {
   background: var(--primary-gradient) !important;
+}
+
+/* Smaller text for card titles in grid view */
+.card-title {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.card-text.small {
+  font-size: 0.65rem;
+}
+
+/* Tighter spacing for cards */
+.row.g-3 {
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+}
+
+/* Hide description on smaller cards */
+@media (max-width: 1400px) {
+  .card-text:not(.small) {
+    display: none;
+  }
+}
+
+/* Add button in dark mode */
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  
+  &:hover {
+    background: var(--dark-hover);
+    border: none;
+  }
 }
