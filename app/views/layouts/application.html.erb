@@ -20,7 +20,8 @@
         </div>
         <hr>
 
-        <ul class="nav flex-column">
+        <!-- Main Navigation -->
+        <ul class="nav flex-column" style="height: calc(100vh - 250px); overflow-y: auto;">
           <li class="nav-item">
             <%= link_to root_path, 
                 class: "nav-link", 
@@ -79,59 +80,65 @@
             </div>
           </li>
           <li style="width: 100%; padding: 0.6rem 0.75rem;">
-            <div class="form-check form-switch" data-controller="display">
+            <div class="form-check form-switch">
               <input class="form-check-input bg-white" 
                      type="checkbox" 
                      id="showCardInfo" 
                      checked
-                     data-action="change->display#toggle">
+                     data-controller="display"
+                     data-action="display#toggle">
               <label class="form-check-label text-white" for="showCardInfo">
                 Card information
               </label>
             </div>
           </li>
         </ul>
+
+        <!-- Management Section at Bottom -->
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <%= link_to genres_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(genres_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-music-note-list me-2"></i>Manage Genres
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to authors_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(authors_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-person me-2"></i>Manage Authors
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to albums_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(albums_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-disc me-2"></i>Manage Albums
+              <% end %>
+            </li>
+          </ul>
+        </div>
       </nav>
 
       <!-- Main Content -->
       <main class="main-content">
-        <!-- Floating Action Button -->
-        <div class="floating-action-btn" style="
-          position: fixed;
-          right: 2rem;
-          top: 2rem;
-          z-index: 1040;">
-          
-          <div class="dropdown">
-            <button class="btn btn-primary rounded-circle shadow-sm" 
-                    type="button" 
-                    data-bs-toggle="dropdown" 
-                    aria-expanded="false"
-                    style="width: 48px; height: 48px;">
-              <i class="bi bi-plus-lg"></i>
-            </button>
-            
-            <ul class="dropdown-menu dropdown-menu-end shadow">
-              <li>
-                <%= link_to genres_path, class: "dropdown-item" do %>
-                  <i class="bi bi-music-note-list me-2"></i>Manage Genres
-                <% end %>
-              </li>
-              <li>
-                <%= link_to authors_path, class: "dropdown-item" do %>
-                  <i class="bi bi-person me-2"></i>Manage Authors
-                <% end %>
-              </li>
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <%= link_to albums_path, class: "dropdown-item" do %>
-                  <i class="bi bi-disc me-2"></i>Manage Albums
-                <% end %>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
         <%= yield %>
       </main>
     </div>
