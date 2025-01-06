@@ -19,9 +19,24 @@ Kollektor::Application.configure do
   config.active_support.report_deprecations = false
   config.active_record.dump_schema_after_migration = false
 
-  # Enable serving of static files
-  config.public_file_server.enabled = true
+  # Disable serving static files from `public/`, relying on nginx/apache instead
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  # config.asset_host = "http://assets.example.com"
+
+  # Specifies the header that your server uses for sending files.
+  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
+  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
+
+  # Compress CSS using a preprocessor.
+  config.assets.css_compressor = nil
+
+  # Do not fallback to assets pipeline if a precompiled asset is missed.
+  config.assets.compile = true
+
+  # Enable serving static files
   config.serve_static_files = true
-  config.assets.compile = false
-  config.assets.digest = true
+
+  # ... rest of your configuration ...
 end
