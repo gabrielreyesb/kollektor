@@ -9,10 +9,16 @@ Kollektor::Application.configure do
   # Asset handling
   config.public_file_server.enabled = true
   config.assets.compile = true
+  config.assets.digest = true
   
   # Active Storage
   config.active_storage.service = :local
+  config.active_storage.replace_on_assign_to_many = false
   
+  # Add URL generation host
+  config.action_controller.default_url_options = { host: ENV['APP_HOST'] || 'localhost:3000' }
+  Rails.application.routes.default_url_options[:host] = ENV['APP_HOST'] || 'localhost:3000'
+
   config.force_ssl = true
   
   config.logger = ActiveSupport::Logger.new(STDOUT)
