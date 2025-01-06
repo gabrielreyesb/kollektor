@@ -123,3 +123,33 @@
   opacity: 0;
   max-height: 0;
 }
+
+.album-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  
+  // Mobile: 2 cards per row
+  grid-template-columns: repeat(2, 1fr);
+  
+  // Tablet: 3 cards per row
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  // Desktop: 4 cards per row
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.album-card {
+  width: 100%;
+  margin-bottom: 1rem;
+  
+  img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+}
