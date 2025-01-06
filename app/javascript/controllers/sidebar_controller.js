@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
+    console.log("Sidebar controller connected!")
     this.handleClickOutside = this.handleClickOutside.bind(this)
     document.addEventListener('click', this.handleClickOutside)
   }
@@ -11,6 +12,7 @@ export default class extends Controller {
   }
 
   toggle(event) {
+    console.log("Toggle called!")
     event.stopPropagation()
     this.element.classList.toggle('active')
   }
