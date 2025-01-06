@@ -22,81 +22,83 @@
         <hr>
 
         <!-- Main Navigation -->
-        <ul class="nav flex-column" style="height: calc(100vh - 250px); overflow-y: auto;">
-          <li class="nav-item">
-            <%= link_to root_path, 
-                class: "nav-link", 
-                style: "
-                  color: white; 
-                  padding: 0.6rem 0.75rem; 
-                  display: block;
-                  text-decoration: none;
-                  #{current_page?(root_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
-              <i class="bi bi-house-door me-2"></i>Home
-            <% end %>
-          </li>
-          <li style="width: 100%; padding: 0.6rem 0.75rem;">
-            <div class="form-group" data-controller="filter">
-              <%= select_tag :genre_id, 
-                  options_for_select([
-                    ["All Genres", ""], 
-                    *(@filtered_genres || Genre.order(:name)).map { |g| [g.name, g.id] }
-                  ], params[:genre_id]),
-                  class: "form-select bg-transparent text-white border-white",
-                  style: "option { color: black; }",
-                  data: { 
-                    action: "change->filter#change",
-                    filter_type_value: "genre_id"
-                  } %>
-            </div>
-          </li>
-          <li style="width: 100%; padding: 0.6rem 0.75rem;">
-            <div class="form-group" data-controller="filter">
-              <%= select_tag :author_id,
-                  options_for_select([
-                    ["All Authors", ""], 
-                    *(@filtered_authors || Author.order(:name)).map { |a| [a.name, a.id] }
-                  ], params[:author_id]),
-                  class: "form-select bg-transparent text-white border-white",
-                  style: "option { color: black; }",
-                  data: { 
-                    action: "change->filter#change",
-                    filter_type_value: "author_id"
-                  } %>
-            </div>
-          </li>
-          <li style="width: 100%; padding: 0.6rem 0.75rem;">
-            <div class="form-group" data-controller="filter">
-              <%= select_tag :album_id,
-                  options_for_select([
-                    ["All Albums", ""], 
-                    *(@filtered_albums || Album.order(:name)).map { |a| [a.name, a.id] }
-                  ], params[:album_id]),
-                  class: "form-select bg-transparent text-white border-white",
-                  style: "option { color: black; }",
-                  data: { 
-                    action: "change->filter#change",
-                    filter_type_value: "album_id"
-                  } %>
-            </div>
-          </li>
-          <li style="width: 100%; padding: 0.6rem 0.75rem;">
-            <div class="form-check form-switch">
-              <input class="form-check-input bg-white" 
-                     type="checkbox" 
-                     id="showCardInfo" 
-                     checked
-                     data-controller="display"
-                     data-action="display#toggle">
-              <label class="form-check-label text-white" for="showCardInfo">
-                Card information
-              </label>
-            </div>
-          </li>
-        </ul>
+        <div class="sidebar-content">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <%= link_to root_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(root_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-house-door me-2"></i>Home
+              <% end %>
+            </li>
+            <li style="width: 100%; padding: 0.6rem 0.75rem;">
+              <div class="form-group" data-controller="filter">
+                <%= select_tag :genre_id, 
+                    options_for_select([
+                      ["All Genres", ""], 
+                      *(@filtered_genres || Genre.order(:name)).map { |g| [g.name, g.id] }
+                    ], params[:genre_id]),
+                    class: "form-select bg-transparent text-white border-white",
+                    style: "option { color: black; }",
+                    data: { 
+                      action: "change->filter#change",
+                      filter_type_value: "genre_id"
+                    } %>
+              </div>
+            </li>
+            <li style="width: 100%; padding: 0.6rem 0.75rem;">
+              <div class="form-group" data-controller="filter">
+                <%= select_tag :author_id,
+                    options_for_select([
+                      ["All Authors", ""], 
+                      *(@filtered_authors || Author.order(:name)).map { |a| [a.name, a.id] }
+                    ], params[:author_id]),
+                    class: "form-select bg-transparent text-white border-white",
+                    style: "option { color: black; }",
+                    data: { 
+                      action: "change->filter#change",
+                      filter_type_value: "author_id"
+                    } %>
+              </div>
+            </li>
+            <li style="width: 100%; padding: 0.6rem 0.75rem;">
+              <div class="form-group" data-controller="filter">
+                <%= select_tag :album_id,
+                    options_for_select([
+                      ["All Albums", ""], 
+                      *(@filtered_albums || Album.order(:name)).map { |a| [a.name, a.id] }
+                    ], params[:album_id]),
+                    class: "form-select bg-transparent text-white border-white",
+                    style: "option { color: black; }",
+                    data: { 
+                      action: "change->filter#change",
+                      filter_type_value: "album_id"
+                    } %>
+              </div>
+            </li>
+            <li style="width: 100%; padding: 0.6rem 0.75rem;">
+              <div class="form-check form-switch">
+                <input class="form-check-input bg-white" 
+                       type="checkbox" 
+                       id="showCardInfo" 
+                       checked
+                       data-controller="display"
+                       data-action="display#toggle">
+                <label class="form-check-label text-white" for="showCardInfo">
+                  Card information
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
 
         <!-- Management Section at Bottom -->
-        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+        <div class="sidebar-footer">
           <ul class="nav flex-column">
             <li class="nav-item">
               <%= link_to genres_path, 
