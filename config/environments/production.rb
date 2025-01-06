@@ -15,12 +15,17 @@ Kollektor::Application.configure do
   config.active_storage.service = :amazon
   config.active_storage.replace_on_assign_to_many = false
   
-  # Add URL generation host
-  config.action_controller.default_url_options = { host: ENV['APP_HOST'] || 'localhost:3000' }
-  Rails.application.routes.default_url_options[:host] = ENV['APP_HOST'] || 'localhost:3000'
-
+  # Set the host for URL generation
+  Rails.application.routes.default_url_options[:host] = 'kollektor-611834243c86.herokuapp.com'
+  config.action_controller.default_url_options = { host: 'kollektor-611834243c86.herokuapp.com' }
+  
+  # Force SSL
   config.force_ssl = true
   
+  # Active Storage URL generation
+  config.active_storage.resolve_model_to_route = :rails_storage_proxy
+  config.active_storage.default_url_options = { host: 'kollektor-611834243c86.herokuapp.com', protocol: 'https' }
+
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
