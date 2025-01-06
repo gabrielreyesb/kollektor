@@ -30,5 +30,30 @@ class HomeController < ApplicationController
     end
     
     @albums = @albums.limit(24)
+    
+    # Build header text based on filters
+    @header_text = build_header_text
+  end
+
+  private
+
+  def build_header_text
+    filters = []
+    
+    if params[:genre_id].present?
+      genre = Genre.find(params[:genre_id])
+      filters << genre.name
+    end
+    
+    if params[:author_id].present?
+      author = Author.find(params[:author_id])
+      filters << author.name
+    end
+    
+    if filters.empty?
+      "All Albums"
+    else
+      "Albums by #{filters.join(' & ')}"
+    end
   end
 end 
