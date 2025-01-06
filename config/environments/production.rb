@@ -22,4 +22,17 @@ Kollektor::Application.configure do
 
   # Enable serving of static files
   config.public_file_server.enabled = true
+
+  # Storage configuration
+  config.active_storage.service = :local
+  
+  # Asset configuration
+  config.public_file_server.enabled = true
+  config.assets.compile = true
+  config.serve_static_assets = true
+  config.serve_static_files = true
+  
+  # Add URL generation host
+  Rails.application.routes.default_url_options[:host] = 'kollektor-611834243c86.herokuapp.com'
+  config.action_controller.default_url_options = { host: 'kollektor-611834243c86.herokuapp.com' }
 end
