@@ -16,6 +16,7 @@ gem 'sassc-rails'
 gem 'active_storage_validations'
 gem 'rack-cors'
 gem 'httparty'
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
