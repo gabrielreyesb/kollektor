@@ -19,4 +19,10 @@ Rails.application.routes.draw do
     get 'musicbrainz/cover/:id', to: 'musicbrainz#cover'
     get 'authors', to: 'authors#index'
   end
+
+  resources :albums do
+    collection do
+      get 'search_info'
+    end
+  end
 end

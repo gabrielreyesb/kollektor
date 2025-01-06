@@ -1,3 +1,8 @@
+<%= content_tag :div, 
+    "Controller: musicbrainz", 
+    data: { controller: "musicbrainz" }, 
+    style: "display: none;" %>
+
 <%= form_with(model: album, class: "mb-4") do |form| %>
   <% if album.errors.any? %>
     <div class="alert alert-danger">
@@ -35,30 +40,33 @@
         <div class="mb-3">
           <%= form.label :name, class: "form-label" %>
           <div class="input-group">
-            <%= form.text_field :name, class: "form-control" %>
-            <button type="button" class="btn btn-secondary" 
-                    data-action="musicbrainz#fetchInfo">
+            <%= form.text_field :name, 
+                class: "form-control",
+                data: { musicbrainz_target: "searchField" } %>
+            <button type="button" 
+                    class="btn btn-secondary"
+                    data-action="click->musicbrainz#search">
               <i class="bi bi-search me-1"></i>Search Info
             </button>
           </div>
         </div>
 
+        <div data-musicbrainz-target="results"></div>
+
         <div class="mb-3">
           <%= form.label :year, class: "form-label" %>
           <%= form.number_field :year, 
               class: "form-control",
+              data: { musicbrainz_target: "yearField" },
               min: 1900,
               max: Time.current.year,
-              data: { 
-                musicbrainz_target: "yearField"
-              },
               placeholder: "Enter year between 1900 and #{Time.current.year}" %>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <%= form.label :description, class: "form-label" %>
-        <%= form.text_area :description, class: "form-control", rows: 5 %>
+        <div class="mb-3">
+          <%= form.label :description, class: "form-label" %>
+          <%= form.text_area :description, class: "form-control", rows: 5 %>
+        </div>
       </div>
     </div>
 
