@@ -1,27 +1,59 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static targets = ["sidebar", "overlay", "toggleButton"]
+
   connect() {
-    console.log("Sidebar controller connected!")
-    this.handleClickOutside = this.handleClickOutside.bind(this)
-    document.addEventListener('click', this.handleClickOutside)
+    this.updateSidebarState()
+    this.handleResize = this.handleResize.bind(this)
+    window.addEventListener('resize', this.handleResize)
+    document.addEventListener('click', this.handleOutsideClick.bind(this))
   }
 
   disconnect() {
-    document.removeEventListener('click', this.handleClickOutside)
+    window.removeEventListener('resize', this.handleResize)
+    document.removeEventListener('click', this.handleOutsideClick)
   }
 
-  toggle(event) {
-    console.log("Toggle called!")
-    event.stopPropagation()
-    this.element.classList.toggle('active')
+  toggle() {
+    if (window.innerWidth < 768) {
+      document.body.style.overflow = this.sidebarTarget.classList.contains('show') ? 'auto' : 'hidden'
+      this.sidebarTarget.classList.toggle('show')
+      this.overlayTarget.classList.toggle('show')
+    } else {
+      this.sidebarTarget.classList.toggle('collapsed')
+      document.body.classList.toggle('sidebar-collapsed')
+    }
   }
 
-  handleClickOutside(event) {
-    if (window.innerWidth <= 768 && 
-        !this.element.contains(event.target) && 
-        !event.target.closest('.sidebar-toggle')) {
-      this.element.classList.remove('active')
+  handleResize() {
+    this.updateSidebarState()
+  }
+
+  updateSidebarState() {
+    if (window.innerWidth < 768) {
+      this.sidebarTarget.classList.remove('collapsed')
+      document.body.classList.remove('sidebar-collapsed')
+      this.sidebarTarget.classList.remove('show')
+      this.overlayTarget.classList.remove('show')
+      document.body.style.overflow = 'auto'
+    }
+  }
+
+  closeOnMobile() {
+    if (window.innerWidth < 768) {
+      this.sidebarTarget.classList.remove('show')
+      this.overlayTarget.classList.remove('show')
+    }
+  }
+
+  handleOutsideClick(event) {
+    if (window.innerWidth < 768 && 
+        !this.sidebarTarget.contains(event.target) && 
+        !event.target.closest('[data-action="sidebar#toggle"]')) {
+      this.sidebarTarget.classList.remove('show')
+      this.overlayTarget.classList.remove('show')
+      document.body.style.overflow = 'auto'
     }
   }
 } 

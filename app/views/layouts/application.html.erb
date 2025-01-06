@@ -8,20 +8,14 @@
 
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   </head>
 
   <body>
-    <div class="wrapper">
-      <!-- Mobile Toggle Button -->
-      <button class="d-md-none btn btn-primary sidebar-toggle" 
-              data-controller="sidebar"
-              data-action="sidebar#toggle">
-        <i class="bi bi-list"></i>
-      </button>
-
+    <div class="d-flex" data-controller="sidebar">
       <!-- Sidebar -->
-      <nav class="sidebar bg-primary" data-controller="sidebar">
+      <nav class="sidebar" data-sidebar-target="sidebar">
         <div style="padding: 12px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
           <%= image_tag "logo.png", style: "height: 32px; width: auto; display: inline-block;" %>
         </div>
@@ -144,10 +138,32 @@
         </div>
       </nav>
 
+      <!-- Overlay -->
+      <div class="sidebar-overlay" 
+           data-sidebar-target="overlay" 
+           data-action="click->sidebar#toggle"
+           role="button"
+           tabindex="0"></div>
+
       <!-- Main Content -->
-      <main class="main-content">
+      <div class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-dark bg-primary fixed-top d-md-none">
+          <div class="container-fluid">
+            <button class="navbar-toggler border-0" 
+                    type="button" 
+                    aria-label="Toggle navigation"
+                    data-action="sidebar#toggle">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-brand">
+              <%= image_tag "logo.png", style: "height: 24px; width: auto;" %>
+            </div>
+          </div>
+        </nav>
+
         <%= yield %>
-      </main>
+      </div>
     </div>
   </body>
 </html>
