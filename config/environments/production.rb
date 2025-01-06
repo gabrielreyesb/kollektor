@@ -5,8 +5,14 @@ Kollektor::Application.configure do
   config.eager_load = true
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
+  
+  # Asset handling
+  config.public_file_server.enabled = true
   config.assets.compile = true
+  
+  # Active Storage
   config.active_storage.service = :local
+  
   config.force_ssl = true
   
   config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -19,20 +25,4 @@ Kollektor::Application.configure do
   config.i18n.fallbacks = true
   config.active_support.report_deprecations = false
   config.active_record.dump_schema_after_migration = false
-
-  # Enable serving of static files
-  config.public_file_server.enabled = true
-
-  # Storage configuration
-  config.active_storage.service = :local
-  
-  # Asset configuration
-  config.public_file_server.enabled = true
-  config.assets.compile = true
-  config.serve_static_assets = true
-  config.serve_static_files = true
-  
-  # Add URL generation host
-  Rails.application.routes.default_url_options[:host] = 'kollektor-611834243c86.herokuapp.com'
-  config.action_controller.default_url_options = { host: 'kollektor-611834243c86.herokuapp.com' }
 end
