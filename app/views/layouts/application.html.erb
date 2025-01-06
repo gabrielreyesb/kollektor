@@ -13,15 +13,14 @@
 
   <body>
     <div class="wrapper">
+      <!-- Mobile Toggle Button -->
+      <button class="d-md-none btn btn-primary sidebar-toggle" 
+              data-action="click->sidebar#toggle">
+        <i class="bi bi-list"></i>
+      </button>
+
       <!-- Sidebar -->
       <nav class="sidebar bg-primary" data-controller="sidebar">
-        <!-- Mobile Toggle Button -->
-        <button class="d-md-none btn btn-link text-white position-absolute" 
-                style="right: -40px; top: 10px;"
-                data-action="sidebar#toggle">
-          <i class="bi bi-list fs-4"></i>
-        </button>
-
         <div style="padding: 12px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
           <%= image_tag "logo.png", style: "height: 32px; width: auto; display: inline-block;" %>
         </div>

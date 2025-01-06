@@ -59,6 +59,7 @@
   box-shadow: 2px 0 4px rgba(0,0,0,0.1);
   background-color: #0066ff;
   position: relative;
+  transition: transform 0.3s ease;
 }
 
 /* Main content */
@@ -70,23 +71,33 @@
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
-    left: -250px;
-    transition: left 0.3s ease;
-    z-index: 1040;
+    position: fixed !important;
+    transform: translateX(-100%);
     height: 100vh;
-    overflow-y: auto;
+    z-index: 1040;
   }
 
   .sidebar.active {
-    left: 0;
+    transform: translateX(0);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 1050;
+    background: #0066ff;
+    border-radius: 4px;
+    padding: 8px 12px;
+    display: block;
   }
 
   .main-content {
     margin-left: 0;
     width: 100%;
     padding: 1rem;
+    padding-top: 60px;
   }
 }
 
