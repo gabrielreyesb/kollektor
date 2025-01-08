@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @albums = Album.includes(:author, :genre).order(year: :asc)
+    @albums = Album.includes(:author, :genre).joins(:author).order('authors.name ASC, albums.year ASC')
     
     if params[:genre_id].present?
       @albums = @albums.where(genre_id: params[:genre_id])
@@ -9,7 +9,7 @@ class HomeController < ApplicationController
                                .where(albums: { genre_id: params[:genre_id] })
                                .distinct
                                .order(:name)
-      @filtered_albums = @albums.order(:name)
+      @filtered_albums = @albums.joins(:author).order('authors.name ASC, albums.year ASC')
     elsif params[:author_id].present?
       @albums = @albums.where(author_id: params[:author_id])
       # Filter available genres for this author
@@ -17,7 +17,7 @@ class HomeController < ApplicationController
                              .where(albums: { author_id: params[:author_id] })
                              .distinct
                              .order(:name)
-      @filtered_albums = @albums.order(:name)
+      @filtered_albums = @albums.order(year: :asc)
     elsif params[:album_id].present?
       @albums = @albums.where(id: params[:album_id])
       album = Album.find(params[:album_id])
@@ -26,7 +26,7 @@ class HomeController < ApplicationController
     else
       @filtered_genres = Genre.order(:name)
       @filtered_authors = Author.order(:name)
-      @filtered_albums = Album.order(:name)
+      @filtered_albums = Album.joins(:author).order('authors.name ASC, albums.year ASC')
     end
     
     @albums = @albums.limit(24)
