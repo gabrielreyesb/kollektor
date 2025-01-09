@@ -365,3 +365,31 @@ body {
     border: none;
   }
 }
+
+/* Pagination styles for dark mode */
+.pagination {
+  .page-item {
+    .page-link {
+      background-color: var(--dark-card);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+      
+      &:hover {
+        background-color: var(--dark-hover);
+        border-color: var(--dark-border);
+        color: var(--dark-text);
+      }
+    }
+    
+    &.active .page-link {
+      background: var(--primary-gradient);
+      border-color: var(--primary-color);
+    }
+    
+    &.disabled .page-link {
+      background-color: var(--dark-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text-muted);
+    }
+  }
+}

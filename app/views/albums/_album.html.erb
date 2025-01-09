@@ -1,0 +1,35 @@
+<div class="col">
+  <div class="card h-100">
+    <% if album.cover_image.attached? %>
+      <% begin %>
+        <%= image_tag (Rails.env.development? ? album.cover_image : album.cover_image.variant(resize_to_fill: [300, 300]).processed),
+            class: "card-img-top",
+            loading: "lazy",
+            style: "aspect-ratio: 1; object-fit: cover;" %>
+      <% rescue ActiveStorage::FileNotFoundError, LoadError %>
+        <div class="bg-light d-flex align-items-center justify-content-center" 
+             style="aspect-ratio: 1;">
+          <i class="bi bi-exclamation-triangle text-warning" style="font-size: 2rem;"></i>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="bg-light d-flex align-items-center justify-content-center" 
+           style="aspect-ratio: 1;">
+        <i class="bi bi-disc text-muted" style="font-size: 2rem;"></i>
+      </div>
+    <% end %>
+    
+    <div class="card-body p-2">
+      <div class="card-info">
+        <h6 class="card-title mb-1 text-truncate"><%= album.name %></h6>
+        <p class="card-text text-muted small mb-0 text-truncate">
+          <i class="bi bi-person me-1"></i><%= album.author.name %> •
+          <i class="bi bi-calendar me-1"></i><%= album.year %>
+        </p>
+        <p class="card-text text-muted small mb-0 text-truncate">
+          <i class="bi bi-music-note me-1"></i><%= album.genre.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div> 

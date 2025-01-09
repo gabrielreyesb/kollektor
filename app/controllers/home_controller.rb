@@ -1,6 +1,10 @@
 class HomeController < ApplicationController
   def index
-    @albums = Album.includes(:author, :genre).joins(:author).order('authors.name ASC, albums.year ASC')
+    @albums = Album.includes(:author, :genre)
+                   .joins(:author)
+                   .order('authors.name ASC, albums.year ASC')
+                   .page(params[:page])
+                   .per(24)
     
     if params[:genre_id].present?
       @albums = @albums.where(genre_id: params[:genre_id])
@@ -29,10 +33,19 @@ class HomeController < ApplicationController
       @filtered_albums = Album.joins(:author).order('authors.name ASC, albums.year ASC')
     end
     
-    @albums = @albums.limit(24)
-    
     # Build header text based on filters
     @header_text = build_header_text
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append(
+          "entries",
+          partial: "albums/album",
+          collection: @albums
+        )
+      end
+    end
   end
 
   private
