@@ -1,41 +1,35 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["entries", "pagination"]
-  static values = { url: String }
-
-  initialize() {
-    this.intersectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.loadMore()
-        }
-      })
-    })
-  }
-
+  static targets = ["pagination", "loading", "loadMoreButton"]
+  
   connect() {
-    if (this.hasPaginationTarget) {
-      this.intersectionObserver.observe(this.paginationTarget)
-    }
+    this.createObserver()
   }
 
   disconnect() {
-    this.intersectionObserver.disconnect()
+    if (this.observer) {
+      this.observer.disconnect()
+    }
   }
 
-  loadMore() {
-    const nextPage = this.paginationTarget.querySelector("a[rel='next']")
-    if (!nextPage) return
+  createObserver() {
+    this.observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const button = entry.target.querySelector('[data-infinite-scroll-target="loadMoreButton"]')
+          if (button) {
+            button.click()
+          }
+        }
+      })
+    }, {
+      rootMargin: '0px 0px 200px 0px',
+      threshold: 0.1
+    })
 
-    fetch(nextPage.href, {
-      headers: { 
-        Accept: "text/vnd.turbo-stream.html"
-      }
-    })
-    .then(response => response.text())
-    .then(html => {
-      Turbo.renderStreamMessage(html)
-    })
+    if (this.hasPaginationTarget) {
+      this.observer.observe(this.paginationTarget)
+    }
   }
 } 

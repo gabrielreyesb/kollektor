@@ -1,0 +1,14 @@
+<%= render albums %>
+
+<% if albums.next_page %>
+  <div data-infinite-scroll-target="pagination" class="text-center mt-4">
+    <%= link_to "Load More", { page: albums.next_page }, 
+        class: "btn btn-outline-primary",
+        data: { 
+          turbo_frame: "page_#{albums.next_page}",
+          infinite_scroll_target: "loadMoreButton"
+        } %>
+  </div>
+
+  <%= turbo_frame_tag "page_#{albums.next_page}" %>
+<% end %> 

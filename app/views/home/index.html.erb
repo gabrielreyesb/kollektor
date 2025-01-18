@@ -1,28 +1,15 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1><%= @header_text %></h1>
+    <h1>All Albums</h1>
   </div>
 
   <% if @albums.any? %>
-    <div data-controller="infinite-scroll">
-      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3"
-           data-infinite-scroll-target="entries">
-        <%= render @albums %>
-      </div>
-      <div data-infinite-scroll-target="pagination" class="d-none">
-        <%= paginate @albums %>
-      </div>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
+      <%= render @albums %>
     </div>
-  <% else %>
-    <div class="text-center py-5">
-      <div class="display-6 text-muted mb-4">
-        <i class="bi bi-disc" style="font-size: 3rem;"></i>
-      </div>
-      <h3 class="text-muted mb-4">No albums yet</h3>
-      <p class="text-muted">Start by adding some albums to your collection</p>
-      <%= link_to new_album_path, class: "btn btn-primary" do %>
-        <i class="bi bi-plus-lg me-2"></i>Add your first album
-      <% end %>
+
+    <div class="text-center mt-4">
+      <%= @albums.size %> albums shown of <%= Album.count %> total
     </div>
   <% end %>
 </div> 

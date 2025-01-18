@@ -393,3 +393,13 @@ body {
     }
   }
 }
+
+/* Hide pagination links but keep the container visible */
+[data-infinite-scroll-target="pagination"] {
+  height: 20px;
+  margin-top: 20px;
+  
+  .pagination {
+    display: none;
+  }
+}
