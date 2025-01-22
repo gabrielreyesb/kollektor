@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :genres
   resources :authors
   resources :albums
+  resources :countries
 
   namespace :api do
     get 'musicbrainz/search'

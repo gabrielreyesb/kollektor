@@ -34,6 +34,11 @@
                 { prompt: "Select an author" }, 
                 { class: "form-select",
                   data: { genre_filter_target: "authorSelect" } } %>
+            <button type="button" 
+                    class="btn btn-secondary"
+                    data-action="click->musicbrainz#searchAlbums">
+              <i class="bi bi-collection me-1"></i>Browse Albums
+            </button>
           </div>
         </div>
 
@@ -51,7 +56,9 @@
           </div>
         </div>
 
-        <div data-musicbrainz-target="results"></div>
+        <div data-musicbrainz-target="results" class="mb-3">
+          <!-- Results will be displayed here -->
+        </div>
 
         <div class="mb-3">
           <%= form.label :year, class: "form-label" %>
@@ -67,6 +74,11 @@
           <%= form.label :description, class: "form-label" %>
           <%= form.text_area :description, class: "form-control", rows: 5 %>
         </div>
+
+        <div class="actions">
+          <%= form.submit class: "btn btn-primary" %>
+          <%= link_to "Cancel", albums_path, class: "btn btn-light ms-2" %>
+        </div>
       </div>
     </div>
 
@@ -75,21 +87,18 @@
         <%= form.label :cover_image, "Album Cover", class: "form-label" %>
         <% if album.persisted? && album.cover_image.attached? %>
           <div class="mb-2">
-            <%= image_tag album.cover_image, class: "img-fluid rounded" %>
+            <%= image_tag album.cover_image, class: "img-fluid rounded", id: "coverPreview" %>
           </div>
         <% else %>
           <div class="mb-2">
-            <img class="img-fluid rounded" style="display: none;">
+            <img id="coverPreview" class="img-fluid rounded" style="display: none;">
           </div>
         <% end %>
-        <%= form.file_field :cover_image, class: "form-control", 
-            accept: "image/png,image/jpeg,image/jpg" %>
+        <%= form.file_field :cover_image, 
+            class: "form-control", 
+            accept: "image/png,image/jpeg,image/jpg",
+            data: { controller: "preview", action: "change->preview#showImage" } %>
       </div>
     </div>
-  </div>
-
-  <div class="actions">
-    <%= form.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", albums_path, class: "btn btn-light ms-2" %>
   </div>
 <% end %> 

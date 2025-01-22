@@ -1,9 +1,26 @@
 <div id="search_results">
-  <% if results.present? %>
-    <% results.each do |result| %>
-      <div class="search-result">
-        <!-- Display your search results here -->
-      </div>
-    <% end %>
+  <% if releases.any? %>
+    <div class="list-group">
+      <% releases.each do |release| %>
+        <button type="button" 
+                class="list-group-item list-group-item-action"
+                data-action="click->musicbrainz#selectAlbum"
+                data-musicbrainz-id-param="<%= release['id'] %>"
+                data-musicbrainz-title-param="<%= release['title'] %>"
+                data-musicbrainz-year-param="<%= release['date']&.split('-')&.first %>">
+          <div class="d-flex w-100 justify-content-between">
+            <h6 class="mb-1"><%= release['title'] %></h6>
+            <small><%= release['date'] %></small>
+          </div>
+          <small class="text-muted">
+            <%= release['label-info']&.first&.dig('label', 'name') %>
+          </small>
+        </button>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      No albums found for this artist
+    </div>
   <% end %>
 </div> 

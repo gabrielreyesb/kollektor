@@ -1,0 +1,31 @@
+<%= form_with(model: country, class: "mb-4") do |form| %>
+  <% if country.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(country.errors.count, "error") %> prohibited this country from being saved:</h2>
+      <ul>
+        <% country.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :code, "Country Code (2 letters)", class: "form-label" %>
+        <%= form.text_field :code, class: "form-control", maxlength: 2 %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", countries_path, class: "btn btn-light ms-2" %>
+  </div>
+<% end %> 

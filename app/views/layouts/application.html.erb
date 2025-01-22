@@ -37,47 +37,39 @@
               <% end %>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
-              <div class="form-group" data-controller="filter">
-                <%= select_tag :genre_id, 
-                    options_for_select([
-                      ["All Genres", ""], 
-                      *(@filtered_genres || Genre.order(:name)).map { |g| [g.name, g.id] }
-                    ], params[:genre_id]),
-                    class: "form-select bg-transparent text-white border-white",
-                    style: "option { color: black; }",
-                    data: { 
-                      action: "change->filter#change",
-                      filter_type_value: "genre_id"
-                    } %>
+              <div class="form-group">
+                <select class="form-select sidebar-select" 
+                        data-controller="filter"
+                        data-action="change->filter#filterChanged"
+                        data-filter-filter-type-value="genre_id">
+                  <option value="">All Genres</option>
+                  <%= options_from_collection_for_select(@genres, :id, :name, params[:genre_id]) %>
+                </select>
               </div>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
-              <div class="form-group" data-controller="filter">
-                <%= select_tag :author_id,
-                    options_for_select([
-                      ["All Authors", ""], 
-                      *(@filtered_authors || Author.order(:name)).map { |a| [a.name, a.id] }
-                    ], params[:author_id]),
-                    class: "form-select bg-transparent text-white border-white",
-                    style: "option { color: black; }",
-                    data: { 
-                      action: "change->filter#change",
-                      filter_type_value: "author_id"
-                    } %>
+              <div class="form-group">
+                <select class="form-select sidebar-select"
+                        data-controller="filter"
+                        data-action="change->filter#filterChanged"
+                        data-filter-filter-type-value="author_id">
+                  <option value="">All Authors</option>
+                  <%= options_from_collection_for_select(@authors, :id, :name, params[:author_id]) %>
+                </select>
               </div>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
-              <div class="form-group" data-controller="filter">
+              <div class="form-group">
                 <%= select_tag :album_id,
                     options_for_select([
                       ["All Albums", ""], 
-                      *(@filtered_albums || Album.order(:name)).map { |a| [a.name, a.id] }
+                      *@albums.map { |a| [a.name, a.id] }
                     ], params[:album_id]),
-                    class: "form-select bg-transparent text-white border-white",
-                    style: "option { color: black; }",
+                    class: "form-select sidebar-select",
                     data: { 
-                      action: "change->filter#change",
-                      filter_type_value: "album_id"
+                      controller: "filter",
+                      action: "change->filter#filterChanged",
+                      filter_filter_type_value: "album_id"
                     } %>
               </div>
             </li>
@@ -133,6 +125,18 @@
                     text-decoration: none;
                     #{current_page?(albums_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
                 <i class="bi bi-disc me-2"></i>Manage Albums
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to countries_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(countries_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-globe me-2"></i>Manage Countries
               <% end %>
             </li>
           </ul>

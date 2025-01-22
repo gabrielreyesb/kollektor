@@ -4,23 +4,21 @@ export default class extends Controller {
   static targets = ["info"]
 
   connect() {
-    // Hide card info by default
-    const cards = document.querySelectorAll('.card-info')
-    cards.forEach(card => {
-      card.style.display = 'none'
-    })
+    // Get saved preference from localStorage
+    const showInfo = localStorage.getItem('showCardInfo') === 'true'
+    this.element.checked = showInfo
+    this.updateDisplay(showInfo)
   }
 
   toggle(event) {
     const showInfo = event.target.checked
-    const cards = document.querySelectorAll('.card-info')
-    
-    cards.forEach(card => {
-      if (showInfo) {
-        card.style.display = 'block'
-      } else {
-        card.style.display = 'none'
-      }
+    localStorage.setItem('showCardInfo', showInfo)
+    this.updateDisplay(showInfo)
+  }
+
+  updateDisplay(show) {
+    document.querySelectorAll('.card-info').forEach(info => {
+      info.style.display = show ? 'block' : 'none'
     })
   }
 } 
