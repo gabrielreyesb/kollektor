@@ -36,3 +36,5 @@ countries.each do |country_data|
     puts "Created country: #{country.name}"
   end
 end
+
+puts "Seeding completed!"

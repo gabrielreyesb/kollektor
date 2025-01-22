@@ -1,34 +1,49 @@
-# List of current countries with ISO codes
-COUNTRIES = [
+# Americas
+americas = [
   { name: 'United States', code: 'US' },
-  { name: 'United Kingdom', code: 'GB' },
   { name: 'Canada', code: 'CA' },
-  { name: 'Australia', code: 'AU' },
-  { name: 'Germany', code: 'DE' },
-  { name: 'France', code: 'FR' },
-  { name: 'Japan', code: 'JP' },
-  { name: 'Spain', code: 'ES' },
-  { name: 'Italy', code: 'IT' },
+  { name: 'Mexico', code: 'MX' },
   { name: 'Brazil', code: 'BR' },
   { name: 'Argentina', code: 'AR' },
-  { name: 'Mexico', code: 'MX' },
-  { name: 'Sweden', code: 'SE' },
-  { name: 'Netherlands', code: 'NL' },
-  { name: 'Norway', code: 'NO' },
-  { name: 'Denmark', code: 'DK' },
-  { name: 'Finland', code: 'FI' },
-  { name: 'Ireland', code: 'IE' },
-  { name: 'Portugal', code: 'PT' },
-  { name: 'Russia', code: 'RU' },
-  { name: 'China', code: 'CN' },
-  { name: 'South Korea', code: 'KR' },
-  { name: 'India', code: 'IN' },
-  { name: 'South Africa', code: 'ZA' },
-  { name: 'New Zealand', code: 'NZ' }
+  { name: 'Chile', code: 'CL' },
+  { name: 'Colombia', code: 'CO' },
+  { name: 'Peru', code: 'PE' }
 ]
 
-COUNTRIES.each do |country|
-  Country.find_or_create_by!(code: country[:code]) do |c|
-    c.name = country[:name]
+# Europe
+europe = [
+  { name: 'United Kingdom', code: 'GB' },
+  { name: 'Germany', code: 'DE' },
+  { name: 'France', code: 'FR' },
+  { name: 'Italy', code: 'IT' },
+  { name: 'Spain', code: 'ES' },
+  { name: 'Netherlands', code: 'NL' },
+  { name: 'Sweden', code: 'SE' },
+  { name: 'Norway', code: 'NO' },
+  { name: 'Denmark', code: 'DK' },
+  { name: 'Ireland', code: 'IE' },
+  { name: 'Portugal', code: 'PT' }
+]
+
+# Asia
+asia = [
+  { name: 'Japan', code: 'JP' },
+  { name: 'South Korea', code: 'KR' },
+  { name: 'China', code: 'CN' },
+  { name: 'India', code: 'IN' },
+  { name: 'Thailand', code: 'TH' },
+  { name: 'Vietnam', code: 'VN' },
+  { name: 'Singapore', code: 'SG' },
+  { name: 'Malaysia', code: 'MY' }
+]
+
+# Combine all regions
+all_countries = americas + europe + asia
+
+# Create countries
+all_countries.each do |country_data|
+  Country.find_or_create_by!(name: country_data[:name]) do |country|
+    country.code = country_data[:code]
+    puts "Created country: #{country.name} (#{country.code})"
   end
 end 
