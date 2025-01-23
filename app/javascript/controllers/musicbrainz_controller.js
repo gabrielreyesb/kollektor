@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["searchField", "results", "yearField"]
+  static targets = ["searchField", "results", "yearField", "preview"]
 
   // Original direct album search
   search(event) {
@@ -33,7 +33,8 @@ export default class extends Controller {
             }
 
             if (data.releases[0].id) {
-              this.fetchCoverArt(data.releases[0].id)
+              console.log('Attempting to fetch cover for release:', data.releases[0].id);
+              this.fetchCover(data.releases[0].id)
             }
           }
         } else {
@@ -98,7 +99,7 @@ export default class extends Controller {
     this.resultsTarget.innerHTML = ''
   }
 
-  fetchCoverArt(releaseId) {
+  fetchCover(releaseId) {
     fetch(`/api/musicbrainz/cover/${releaseId}`)
       .then(response => {
         if (!response.ok) throw new Error('Network response was not ok')

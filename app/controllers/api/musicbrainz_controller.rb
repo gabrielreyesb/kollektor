@@ -25,6 +25,8 @@ class Api::MusicbrainzController < ApplicationController
   def cover
     response = HTTParty.get("https://coverartarchive.org/release/#{params[:id]}/front")
     send_data response.body, type: response.headers['content-type'], disposition: 'inline'
+  rescue StandardError => e
+    render json: { error: "Cover not found" }, status: :not_found
   end
 
   private

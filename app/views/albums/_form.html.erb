@@ -15,10 +15,9 @@
     </div>
   <% end %>
 
-  <div class="row">
+  <div class="row" data-controller="musicbrainz genre-filter">
     <div class="col-md-8">
-      <div data-controller="musicbrainz genre-filter"
-           data-musicbrainz-target="container">
+      <div data-musicbrainz-target="container">
         <div class="mb-3">
           <%= form.label :genre_id, "Genre", class: "form-label" %>
           <%= form.collection_select :genre_id, @genres, :id, :name, 
@@ -84,20 +83,26 @@
 
     <div class="col-md-4">
       <div class="mb-3">
-        <%= form.label :cover_image, "Album Cover", class: "form-label" %>
-        <% if album.persisted? && album.cover_image.attached? %>
-          <div class="mb-2">
-            <%= image_tag album.cover_image, class: "img-fluid rounded", id: "coverPreview" %>
-          </div>
-        <% else %>
-          <div class="mb-2">
-            <img id="coverPreview" class="img-fluid rounded" style="display: none;">
-          </div>
-        <% end %>
+        <%= form.label :cover_image, class: "form-label" %>
         <%= form.file_field :cover_image, 
-            class: "form-control", 
-            accept: "image/png,image/jpeg,image/jpg",
-            data: { controller: "preview", action: "change->preview#showImage" } %>
+                            class: "form-control", 
+                            accept: "image/*",
+                            direct_upload: true %>
+        
+        <div class="mt-2">
+          <% if form.object.persisted? && form.object.cover_image.attached? %>
+            <%= image_tag form.object.cover_image, 
+                          id: "coverPreview",
+                          data: { musicbrainz_target: "preview" },
+                          class: "img-thumbnail",
+                          style: "max-height: 200px;" %>
+          <% else %>
+            <img id="coverPreview"
+                 data-musicbrainz-target="preview"
+                 class="img-thumbnail"
+                 style="max-height: 200px; display: none;">
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

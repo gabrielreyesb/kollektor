@@ -11,9 +11,13 @@ class AlbumsController < ApplicationController
 
   def new
     @album = Album.new
+    @genres = Genre.order(:name)
+    @authors = Author.order(:name)
   end
 
   def edit
+    @genres = Genre.order(:name)
+    @authors = Author.order(:name)
   end
 
   def create
