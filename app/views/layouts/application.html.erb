@@ -92,6 +92,34 @@
         <div class="sidebar-footer">
           <ul class="nav flex-column">
             <li class="nav-item">
+              <%= link_to statistics_path, 
+                  class: "nav-link", 
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;
+                    #{current_page?(statistics_path) ? 'background: rgba(255, 255, 255, 0.2);' : ''}" do %>
+                <i class="bi bi-graph-up me-2"></i>Statistics
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "#", 
+                  class: "nav-link",
+                  data: {
+                    controller: "mood-prompt",
+                    action: "click->mood-prompt#showModal"
+                  },
+                  style: "
+                    color: white; 
+                    padding: 0.6rem 0.75rem; 
+                    display: block;
+                    text-decoration: none;" do %>
+                <i class="bi bi-lightbulb me-2"></i>Get Suggestions
+              <% end %>
+            </li>
+            <hr>
+            <li class="nav-item">
               <%= link_to genres_path, 
                   class: "nav-link", 
                   style: "
@@ -168,6 +196,30 @@
         </nav>
 
         <%= yield %>
+      </div>
+    </div>
+
+    <!-- Mood Modal -->
+    <div data-controller="mood-prompt" data-show-prompt="<%= @show_mood_prompt %>">
+      <div class="modal fade" data-mood-prompt-target="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+              <h5 class="modal-title">How are you feeling today?</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-3">Select a genre that matches your mood:</p>
+              <select class="form-select bg-dark text-white border-secondary mb-4" 
+                      data-action="change->mood-prompt#selectGenre">
+                <option value="">Choose a genre...</option>
+                <%= options_from_collection_for_select(@genres, :id, :name) %>
+              </select>
+              
+              <div data-mood-prompt-target="recommendationsContainer"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

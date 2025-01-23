@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get 'musicbrainz/release/:id', to: 'musicbrainz#release'
     get 'musicbrainz/cover/:id', to: 'musicbrainz#cover'
     get 'authors', to: 'authors#index'
+    get 'recommendations/by_genre/:genre_id', to: 'recommendations#by_genre'
   end
 
   resources :albums do
@@ -26,4 +27,6 @@ Rails.application.routes.draw do
       get 'search_info'
     end
   end
+
+  get 'statistics', to: 'statistics#index'
 end

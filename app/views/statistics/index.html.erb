@@ -1,0 +1,98 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Collection Statistics</h1>
+  </div>
+
+  <div class="row g-4">
+    <!-- Total Albums Card -->
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Albums</h5>
+          <h2 class="display-4 mb-0"><%= @total_albums %></h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Albums by Decade -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Albums by Decade</h5>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Decade</th>
+                  <th class="text-end">Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @albums_by_decade.each do |decade, count| %>
+                  <tr>
+                    <td><%= decade %></td>
+                    <td class="text-end"><%= count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Albums by Genre -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Albums by Genre</h5>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Genre</th>
+                  <th class="text-end">Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @albums_by_genre.each do |genre, count| %>
+                  <tr>
+                    <td><%= genre %></td>
+                    <td class="text-end"><%= count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Albums by Country -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Albums by Country</h5>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th class="text-end">Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @albums_by_country.each do |country, count| %>
+                  <tr>
+                    <td><%= country %></td>
+                    <td class="text-end"><%= count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
