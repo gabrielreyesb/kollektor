@@ -1,18 +1,30 @@
 <div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Genres</h1>
-    <div class="d-flex gap-2">
-      <%= form_with(url: genres_path, method: :get, class: "d-flex gap-2") do |f| %>
-        <%= f.search_field :search, 
-            value: params[:search],
-            class: "form-control",
-            placeholder: "Search genres...",
-            "aria-label": "Search" %>
-        <%= f.submit "Search", class: "btn btn-secondary" %>
-      <% end %>
-      <%= link_to new_genre_path, class: "btn btn-primary" do %>
-        <i class="bi bi-plus-lg me-2"></i>Add genre
-      <% end %>
+  <!-- Header section with responsive layout -->
+  <div class="mb-4">
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+      <h1 class="mb-0">Genres</h1>
+      
+      <div class="d-flex gap-2 flex-grow-1 flex-sm-grow-0" style="max-width: 100%;">
+        <%= form_tag genres_path, method: :get, class: "flex-grow-1 flex-sm-grow-0", style: "max-width: 300px;" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], 
+                class: "form-control bg-dark text-white border-secondary",
+                placeholder: "Search genres..." %>
+            <% if params[:search].present? %>
+              <%= link_to genres_path, class: "btn btn-outline-secondary" do %>
+                <i class="bi bi-x-lg"></i>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= link_to new_genre_path, 
+            class: "btn btn-primary d-flex align-items-center gap-2",
+            style: "white-space: nowrap;" do %>
+          <i class="bi bi-plus-lg"></i>
+          <span>Add genre</span>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -22,7 +34,6 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Description</th>
             <th>Albums</th>
             <th>Authors</th>
             <th width="150">Actions</th>
@@ -33,7 +44,6 @@
           <% @genres.each do |genre| %>
             <tr>
               <td class="align-middle"><%= genre.name %></td>
-              <td class="align-middle"><%= truncate(genre.description, length: 100) %></td>
               <td class="align-middle"><%= genre.albums.count %></td>
               <td class="align-middle"><%= genre.authors.count %></td>
               <td>

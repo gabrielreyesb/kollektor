@@ -3,24 +3,16 @@ class HomeController < ApplicationController
 
   def index
     @albums = Album.includes(:author, :genre)
-                   .order('authors.name ASC, albums.year ASC')
 
-    if params[:genre_id].present?
-      @albums = @albums.where(genre_id: params[:genre_id])
-                      .order('authors.name ASC, albums.year ASC')
-      @authors = Author.joins(:albums)
-                      .where(albums: { genre_id: params[:genre_id] })
-                      .distinct
-                      .order(:name)
-    end
+    # Apply filters if present
+    @albums = @albums.where(genre_id: params[:genre_id]) if params[:genre_id].present?
+    @albums = @albums.where(author_id: params[:author_id]) if params[:author_id].present?
+    @albums = @albums.where(id: params[:album_id]) if params[:album_id].present?
 
-    if params[:author_id].present?
-      @albums = @albums.where(author_id: params[:author_id])
-    end
+    # Limit to 24 albums only on the home page when no filters are applied
+    @albums = @albums.limit(24) unless params[:genre_id].present? || params[:author_id].present? || params[:album_id].present?
 
-    if params[:album_id].present?
-      @albums = @albums.where(id: params[:album_id])
-    end
+    @albums = @albums.order(created_at: :desc)
   end
 
   private

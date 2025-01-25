@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["searchField", "results", "yearField", "preview"]
+  static targets = ["searchField", "results", "yearField", "preview", "container"]
 
   // Original direct album search
   search(event) {
@@ -89,14 +89,16 @@ export default class extends Controller {
   }
 
   selectAlbum(event) {
-    const button = event.currentTarget
-    const title = button.dataset.musicbrainzTitleParam
-
-    // Update form field
-    this.searchFieldTarget.value = title
-
-    // Clear results
+    event.preventDefault()
+    const albumName = event.target.textContent.trim()
+    this.searchFieldTarget.value = albumName
     this.resultsTarget.innerHTML = ''
+    
+    // Find and click the Search Info button
+    const searchButton = this.element.querySelector('button[data-action="click->musicbrainz#search"]')
+    if (searchButton) {
+      searchButton.click()
+    }
   }
 
   fetchCover(releaseId) {

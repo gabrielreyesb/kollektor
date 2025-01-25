@@ -13,12 +13,11 @@
           <div class="card-body p-2">
             <div class="card-info" style="display: none;">
               <div class="text-truncate mb-1">
-                <span> <%= album.author.name %></span> • 
                 <span class="text-muted"><%= album.name %></span>
               </div>
               <div class="text-truncate text-muted small">
-                <i class="bi bi-music-note"></i> <%= album.genre.name %> • 
-                <i class="bi bi-calendar"></i> <%= album.year %>
+                <span><%= album.author.name %></span> • 
+                <span><%= album.year %></span>
               </div>
             </div>
           </div>
