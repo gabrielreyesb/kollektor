@@ -1,9 +1,19 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Authors</h1>
-    <%= link_to new_author_path, class: "btn btn-primary" do %>
-      <i class="bi bi-plus-lg me-2"></i>Add author
-    <% end %>
+    <div class="d-flex gap-2">
+      <%= form_with(url: authors_path, method: :get, class: "d-flex gap-2") do |f| %>
+        <%= f.search_field :search, 
+            value: params[:search],
+            class: "form-control",
+            placeholder: "Search authors...",
+            "aria-label": "Search" %>
+        <%= f.submit "Search", class: "btn btn-secondary" %>
+      <% end %>
+      <%= link_to new_author_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-lg me-2"></i>Add author
+      <% end %>
+    </div>
   </div>
 
   <% if @authors.any? %>

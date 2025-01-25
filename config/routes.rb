@@ -19,7 +19,8 @@ Rails.application.routes.draw do
     get 'musicbrainz/release/:id', to: 'musicbrainz#release'
     get 'musicbrainz/cover/:id', to: 'musicbrainz#cover'
     get 'authors', to: 'authors#index'
-    get 'recommendations/by_genre/:genre_id', to: 'recommendations#by_genre'
+    get 'recommendations/by_genre/random', to: 'recommendations#by_genre', defaults: { id: 'random' }
+    get 'recommendations/by_genre/:id', to: 'recommendations#by_genre'
   end
 
   resources :albums do

@@ -3,7 +3,12 @@ class Album < ApplicationRecord
   belongs_to :author
   has_one_attached :cover_image
 
-  validates :name, presence: true
+  validates :name, presence: true, 
+                  uniqueness: { 
+                    scope: :author_id,
+                    case_sensitive: false,
+                    message: "already exists for this author" 
+                  }
   validates :year, presence: true, 
             numericality: { only_integer: true, 
                           greater_than: 1900, 
@@ -11,6 +16,14 @@ class Album < ApplicationRecord
   validates :genre, presence: true
   validates :author, presence: true
   validate :acceptable_cover_image, if: :cover_image_attached?
+
+  scope :search, ->(query) {
+    joins(:author, :genre)
+      .where("LOWER(albums.name) LIKE :query OR 
+              LOWER(authors.name) LIKE :query OR 
+              LOWER(genres.name) LIKE :query", 
+              query: "%#{query.downcase}%")
+  }
 
   private
     def cover_image_attached?

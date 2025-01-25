@@ -9,6 +9,14 @@ class Author < ApplicationRecord
   validates :country_id, presence: true
   validate :acceptable_image, if: :image_attached?
   
+  scope :search, ->(query) {
+    joins(:genre)
+      .where("LOWER(authors.name) LIKE :query OR 
+              LOWER(authors.description) LIKE :query OR 
+              LOWER(genres.name) LIKE :query", 
+              query: "%#{query.downcase}%")
+  }
+  
   private
     def image_attached?
       image.attached?

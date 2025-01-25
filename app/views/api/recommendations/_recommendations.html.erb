@@ -1,19 +1,40 @@
-<div class="row g-4">
-  <% @recommended_albums.each do |album| %>
-    <div class="col-md-4">
-      <div class="card h-100 bg-dark text-white border-secondary">
-        <% if album.cover_image.attached? %>
-          <%= image_tag album.cover_image, class: "card-img-top", loading: "lazy", style: "aspect-ratio: 1; object-fit: cover;" %>
-        <% end %>
-        <div class="card-body">
-          <h5 class="card-title"><%= album.name %></h5>
-          <p class="card-text">
-            <small class="text-muted">
-              <%= album.author.name %> • <%= album.year %>
-            </small>
-          </p>
+<!-- Add debug info at the top -->
+<%# Debug info %>
+<div class="d-none">
+  Genre: <%= @genre&.name %>
+  Albums count: <%= @recommended_albums&.size %>
+</div>
+
+<% if @recommended_albums.any? %>
+  <% if @random_selection %>
+    <h6 class="mb-3">Here are some random albums you might enjoy:</h6>
+  <% else %>
+    <h6 class="mb-3">Here are some <%= @genre.name %> albums you might enjoy:</h6>
+  <% end %>
+  
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <% @recommended_albums.each do |album| %>
+      <div class="col">
+        <div class="card h-100 bg-dark text-white border-secondary">
+          <% if album.cover_image.attached? %>
+            <%= image_tag album.cover_image, class: "card-img-top", loading: "lazy", style: "aspect-ratio: 1; object-fit: cover;" %>
+          <% end %>
+          <div class="card-body">
+            <h6 class="card-title mb-1"><%= album.name %></h6>
+            <p class="card-text">
+              <small class="text-muted">
+                <i class="bi bi-person"></i> <%= album.author.name %> • 
+                <i class="bi bi-music-note"></i> <%= album.genre.name %> •
+                <i class="bi bi-calendar"></i> <%= album.year %>
+              </small>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
-</div> 
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    No albums found. Try adding some albums first!
+  </div>
+<% end %> 

@@ -3,7 +3,9 @@ class AlbumsController < ApplicationController
   before_action :load_dependencies, only: %i[ new edit create update ]
 
   def index
-    @albums = Album.all.includes(:genre, :author)
+    @albums = Album.includes(:genre, :author)
+    @albums = @albums.search(params[:search]) if params[:search].present?
+    @albums = @albums.order(:name)
   end
 
   def show

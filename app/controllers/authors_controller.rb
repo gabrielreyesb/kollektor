@@ -3,7 +3,9 @@ class AuthorsController < ApplicationController
   before_action :load_dependencies, only: %i[ new edit create update ]
 
   def index
-    @authors = Author.all.includes(:genre, :country)
+    @authors = Author.includes(:genre, :country)
+    @authors = @authors.search(params[:search]) if params[:search].present?
+    @authors = @authors.order(:name)
   end
 
   def show

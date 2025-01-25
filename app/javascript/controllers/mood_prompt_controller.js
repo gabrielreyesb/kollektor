@@ -1,30 +1,64 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal", "recommendationsContainer"]
+  static targets = ["modal", "recommendationsContainer", "genreSelect", "refreshButtonContainer"]
 
   connect() {
-    // Only auto-show for daily prompt
-    if (this.element.dataset.showPrompt === 'true') {
-      this.showModal()
-    }
+    this.modalTarget.addEventListener('show.bs.modal', this.clearRecommendations.bind(this))
   }
 
-  showModal() {
-    const modal = new bootstrap.Modal(document.querySelector('[data-mood-prompt-target="modal"]'))
-    modal.show()
+  clearRecommendations() {
+    this.recommendationsContainerTarget.innerHTML = ''
+    this.genreSelectTarget.value = ''
+    this.refreshButtonContainerTarget.style.display = 'none'
   }
 
   async selectGenre(event) {
-    const genreId = event.target.value
-    if (!genreId) return
+    const genreId = this.genreSelectTarget.value
+    
+    if (!genreId) {
+      this.recommendationsContainerTarget.innerHTML = ''
+      this.refreshButtonContainerTarget.style.display = 'none'
+      return
+    }
 
+    await this.fetchRecommendations(genreId)
+  }
+
+  async refreshSuggestions() {
+    const genreId = this.genreSelectTarget.value
+    if (genreId) {
+      await this.fetchRecommendations(genreId)
+    }
+  }
+
+  async fetchRecommendations(genreId) {
     try {
-      const response = await fetch(`/api/recommendations/by_genre/${genreId}`)
+      let url = `/api/recommendations/by_genre/`
+      if (genreId === 'random') {
+        url += 'random'
+      } else {
+        url += genreId
+      }
+
+      const response = await fetch(url)
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      
       const html = await response.text()
       this.recommendationsContainerTarget.innerHTML = html
+      this.refreshButtonContainerTarget.style.display = 'block'
     } catch (error) {
-      console.error('Error fetching recommendations:', error)
+      this.recommendationsContainerTarget.innerHTML = `
+        <div class="alert alert-danger">
+          Error loading recommendations. Please try again.
+          <br>
+          <small class="text-muted">${error.message}</small>
+        </div>
+      `
+      this.refreshButtonContainerTarget.style.display = 'none'
     }
   }
 } 

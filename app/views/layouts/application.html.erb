@@ -38,39 +38,51 @@
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
               <div class="form-group">
-                <select class="form-select sidebar-select" 
-                        data-controller="filter"
-                        data-action="change->filter#filterChanged"
-                        data-filter-filter-type-value="genre_id">
-                  <option value="">All Genres</option>
-                  <%= options_from_collection_for_select(@genres, :id, :name, params[:genre_id]) %>
-                </select>
+                <div class="position-relative">
+                  <i class="bi bi-music-note-list position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); z-index: 2;"></i>
+                  <select class="form-select sidebar-select" 
+                          style="padding-left: 35px;"
+                          data-controller="filter"
+                          data-action="change->filter#filterChanged"
+                          data-filter-filter-type-value="genre_id">
+                    <option value="">All Genres</option>
+                    <%= options_from_collection_for_select(@genres, :id, :name, params[:genre_id]) %>
+                  </select>
+                </div>
               </div>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
               <div class="form-group">
-                <select class="form-select sidebar-select"
-                        data-controller="filter"
-                        data-action="change->filter#filterChanged"
-                        data-filter-filter-type-value="author_id">
-                  <option value="">All Authors</option>
-                  <%= options_from_collection_for_select(@authors, :id, :name, params[:author_id]) %>
-                </select>
+                <div class="position-relative">
+                  <i class="bi bi-person position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); z-index: 2;"></i>
+                  <select class="form-select sidebar-select"
+                          style="padding-left: 35px;"
+                          data-controller="filter"
+                          data-action="change->filter#filterChanged"
+                          data-filter-filter-type-value="author_id">
+                    <option value="">All Authors</option>
+                    <%= options_from_collection_for_select(@authors, :id, :name, params[:author_id]) %>
+                  </select>
+                </div>
               </div>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
               <div class="form-group">
-                <%= select_tag :album_id,
-                    options_for_select([
-                      ["All Albums", ""], 
-                      *@albums.map { |a| [a.name, a.id] }
-                    ], params[:album_id]),
-                    class: "form-select sidebar-select",
-                    data: { 
-                      controller: "filter",
-                      action: "change->filter#filterChanged",
-                      filter_filter_type_value: "album_id"
-                    } %>
+                <div class="position-relative">
+                  <i class="bi bi-disc position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); z-index: 2;"></i>
+                  <%= select_tag :album_id,
+                      options_for_select([
+                        ["All Albums", ""], 
+                        *@albums.map { |a| [a.name, a.id] }
+                      ], params[:album_id]),
+                      class: "form-select sidebar-select",
+                      style: "padding-left: 35px;",
+                      data: { 
+                        controller: "filter",
+                        action: "change->filter#filterChanged",
+                        filter_filter_type_value: "album_id"
+                      } %>
+                </div>
               </div>
             </li>
             <li style="width: 100%; padding: 0.6rem 0.75rem;">
@@ -104,19 +116,13 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <%= link_to "#", 
-                  class: "nav-link",
-                  data: {
-                    controller: "mood-prompt",
-                    action: "click->mood-prompt#showModal"
-                  },
-                  style: "
-                    color: white; 
-                    padding: 0.6rem 0.75rem; 
-                    display: block;
-                    text-decoration: none;" do %>
+              <a href="#" 
+                 class="nav-link"
+                 data-bs-toggle="modal" 
+                 data-bs-target="#suggestionsModal"
+                 style="color: white; padding: 0.6rem 0.75rem; display: block; text-decoration: none;">
                 <i class="bi bi-lightbulb me-2"></i>Get Suggestions
-              <% end %>
+              </a>
             </li>
             <hr>
             <li class="nav-item">
@@ -200,23 +206,39 @@
     </div>
 
     <!-- Mood Modal -->
-    <div data-controller="mood-prompt" data-show-prompt="<%= @show_mood_prompt %>">
-      <div class="modal fade" data-mood-prompt-target="modal" tabindex="-1">
+    <div data-controller="mood-prompt">
+      <div class="modal fade" 
+           id="suggestionsModal"
+           data-mood-prompt-target="modal" 
+           tabindex="-1" 
+           aria-labelledby="suggestionsModalLabel" 
+           aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content bg-dark text-white">
             <div class="modal-header border-secondary">
-              <h5 class="modal-title">How are you feeling today?</h5>
+              <h5 class="modal-title" id="suggestionsModalLabel">What would you like to listen to?</h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <p class="mb-3">Select a genre that matches your mood:</p>
-              <select class="form-select bg-dark text-white border-secondary mb-4" 
-                      data-action="change->mood-prompt#selectGenre">
-                <option value="">Choose a genre...</option>
-                <%= options_from_collection_for_select(@genres, :id, :name) %>
-              </select>
+              <div class="mb-4">
+                <label class="form-label">Select a genre:</label>
+                <select class="form-select bg-dark text-white border-secondary" 
+                        data-mood-prompt-target="genreSelect"
+                        data-action="change->mood-prompt#selectGenre">
+                  <option value="">Choose a genre...</option>
+                  <option value="random">🎲 Surprise me!</option>
+                  <%= options_from_collection_for_select(@genres.order(:name), :id, :name) %>
+                </select>
+              </div>
               
               <div data-mood-prompt-target="recommendationsContainer"></div>
+
+              <!-- Add this button container -->
+              <div data-mood-prompt-target="refreshButtonContainer" style="display: none;" class="text-center mt-4">
+                <button class="btn btn-primary" data-action="click->mood-prompt#refreshSuggestions">
+                  <i class="bi bi-shuffle me-2"></i>New Suggestions
+                </button>
+              </div>
             </div>
           </div>
         </div>

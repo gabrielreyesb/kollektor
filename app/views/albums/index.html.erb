@@ -1,9 +1,19 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Albums</h1>
-    <%= link_to new_album_path, class: "btn btn-primary" do %>
-      <i class="bi bi-plus-lg me-2"></i>Add album
-    <% end %>
+    <div class="d-flex gap-2">
+      <%= form_with(url: albums_path, method: :get, class: "d-flex gap-2") do |f| %>
+        <%= f.search_field :search, 
+            value: params[:search],
+            class: "form-control",
+            placeholder: "Search albums...",
+            "aria-label": "Search" %>
+        <%= f.submit "Search", class: "btn btn-secondary" %>
+      <% end %>
+      <%= link_to new_album_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-lg me-2"></i>Add album
+      <% end %>
+    </div>
   </div>
 
   <% if @albums.any? %>

@@ -3,6 +3,8 @@ class GenresController < ApplicationController
 
   def index
     @genres = Genre.all
+    @genres = @genres.search(params[:search]) if params[:search].present?
+    @genres = @genres.order(:name)
   end
 
   def show
