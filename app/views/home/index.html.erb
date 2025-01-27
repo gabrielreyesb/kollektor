@@ -1,19 +1,6 @@
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>
-      <% if params[:album_id].present? %>
-        <%= Album.find(params[:album_id]).name %>
-      <% elsif params[:author_id].present? %>
-        <%= Author.find(params[:author_id]).name %>'s Albums
-        <% if params[:genre_id].present? %>
-          <small class="text-muted">(<%= Genre.find(params[:genre_id]).name %>)</small>
-        <% end %>
-      <% elsif params[:genre_id].present? %>
-        <%= Genre.find(params[:genre_id]).name %> Albums
-      <% else %>
-        Recently Added
-      <% end %>
-    </h1>
+    <h1><%= @title %></h1>
   </div>
 
   <div class="row g-3">

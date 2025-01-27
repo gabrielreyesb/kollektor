@@ -33,8 +33,8 @@
                 { prompt: "Select an author" }, 
                 { class: "form-select",
                   data: { 
-                    action: "change->musicbrainz#searchAlbums",
-                    musicbrainz_target: "authorSelect" 
+                    genre_filter_target: "authorSelect",
+                    action: "change->genre-filter#authorChanged"
                   } } %>
             <button type="button" 
                     class="btn btn-secondary"

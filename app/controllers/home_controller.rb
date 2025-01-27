@@ -13,6 +13,9 @@ class HomeController < ApplicationController
     @albums = @albums.limit(24) unless params[:genre_id].present? || params[:author_id].present? || params[:album_id].present?
 
     @albums = @albums.order(created_at: :desc)
+
+    # Set title variables for the view
+    @title = get_title
   end
 
   private
@@ -24,6 +27,20 @@ class HomeController < ApplicationController
     if last_visit.nil? || Time.parse(last_visit).to_date != Time.current.to_date
       @show_mood_prompt = true
       cookies[:last_mood_check] = Time.current
+    end
+  end
+
+  def get_title
+    if params[:album_id].present?
+      Album.find(params[:album_id]).name
+    elsif params[:author_id].present?
+      author_name = Author.find(params[:author_id]).name
+      genre_name = Genre.find(params[:genre_id]).name if params[:genre_id].present?
+      genre_name ? "#{author_name}'s Albums (#{genre_name})" : "#{author_name}'s Albums"
+    elsif params[:genre_id].present?
+      "#{Genre.find(params[:genre_id]).name} Albums"
+    else
+      "Recently Added"
     end
   end
 end 
