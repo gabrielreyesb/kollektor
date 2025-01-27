@@ -32,7 +32,10 @@
             <%= form.collection_select :author_id, @authors, :id, :name, 
                 { prompt: "Select an author" }, 
                 { class: "form-select",
-                  data: { genre_filter_target: "authorSelect" } } %>
+                  data: { 
+                    action: "change->musicbrainz#searchAlbums",
+                    musicbrainz_target: "authorSelect" 
+                  } } %>
             <button type="button" 
                     class="btn btn-secondary"
                     data-action="click->musicbrainz#searchAlbums">
@@ -77,9 +80,13 @@
               style: "max-height: 100px; resize: vertical;" %>
         </div>
 
-        <div class="actions d-flex flex-column flex-sm-row gap-2 mt-4 mb-4">
-          <%= form.submit "Create Album", class: "btn btn-primary w-100 w-sm-auto" %>
-          <%= link_to "Cancel", albums_path, class: "btn btn-light w-100 w-sm-auto" %>
+        <div class="actions d-flex flex-column flex-sm-row gap-2 gap-sm-3 mt-4 mb-4">
+          <%= form.submit "Create Album", 
+              class: "btn btn-primary w-100 w-sm-auto",
+              style: "background-color: #0d6efd; border-color: #0d6efd;" %>
+          <%= link_to "Cancel", albums_path, 
+              class: "btn w-100 w-sm-auto",
+              style: "background-color: #2c3034; color: #fff; border-color: #373b3e;" %>
         </div>
       </div>
     </div>
@@ -90,7 +97,11 @@
         <%= form.file_field :cover_image, 
                           class: "form-control", 
                           accept: "image/*",
-                          direct_upload: true %>
+                          direct_upload: true,
+                          data: { 
+                            controller: "preview",
+                            action: "change->preview#showImage" 
+                          } %>
         
         <div class="mt-3">
           <% if form.object.persisted? && form.object.cover_image.attached? %>
@@ -101,9 +112,9 @@
                         style: "max-height: 200px;" %>
           <% else %>
             <img id="coverPreview"
-                data-musicbrainz-target="preview"
-                class: "img-thumbnail"
-                style="max-height: 200px; display: none;">
+                 data-musicbrainz_target: "preview"
+                 class="img-thumbnail"
+                 style="max-height: 200px; display: none;">
           <% end %>
         </div>
       </div>

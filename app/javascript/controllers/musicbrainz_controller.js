@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["searchField", "results", "yearField", "preview", "container"]
+  static targets = ["searchField", "results", "yearField", "preview", "container", "authorSelect"]
 
   // Original direct album search
   search(event) {
@@ -53,15 +53,14 @@ export default class extends Controller {
 
   // Browse albums by artist
   searchAlbums(event) {
-    const button = event.currentTarget
-    const artistSelect = document.getElementById('album_author_id')
+    const artistSelect = event.type === 'change' ? event.target : document.getElementById('album_author_id')
     const artistName = artistSelect.options[artistSelect.selectedIndex].text
 
     if (!artistName || artistSelect.value === "") {
-      alert('Please select an artist first')
       return
     }
 
+    const button = this.element.querySelector('button[data-action="click->musicbrainz#searchAlbums"]')
     button.disabled = true
     button.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Searching...'
 

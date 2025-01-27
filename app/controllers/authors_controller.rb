@@ -47,7 +47,7 @@ class AuthorsController < ApplicationController
     end
 
     def load_dependencies
-      @genres = Genre.all
+      @genres = Genre.order(:name)
       @countries = Country.order(:name)
     end
 
