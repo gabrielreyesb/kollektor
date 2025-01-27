@@ -1,4 +1,126 @@
 <div class="container-fluid">
-  <h1 class="mb-4">Edit Album</h1>
-  <%= render "form", album: @album %>
+  <h1 class="mb-4 text-light">Edit Album</h1>
+    <%= content_tag :div, 
+      "Controller: musicbrainz", 
+      data: { controller: "musicbrainz" }, 
+      style: "display: none;" %>
+
+  <%= form_with(model: @album, class: "mb-4") do |form| %>
+    <% if @album.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(@album.errors.count, "error") %> prohibited this album from being saved:</h2>
+        <ul>
+          <% @album.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row" data-controller="musicbrainz genre-filter">
+      <div class="col-md-8">
+        <div data-musicbrainz-target="container">
+          <div class="mb-3">
+            <%= form.label :genre_id, "Genre", class: "form-label" %>
+            <%= form.collection_select :genre_id, @genres, :id, :name, 
+                { prompt: "Select a genre" }, 
+                { class: "form-select",
+                  data: { action: "change->genre-filter#filterAuthors" } } %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :author_id, "Author", class: "form-label" %>
+            <div class="input-group">
+              <%= form.collection_select :author_id, @authors, :id, :name, 
+                  { prompt: "Select an author" }, 
+                  { class: "form-select",
+                    data: { 
+                      genre_filter_target: "authorSelect",
+                      action: "change->genre-filter#authorChanged"
+                    } } %>
+              <button type="button" 
+                      class="btn btn-secondary"
+                      data-action="click->musicbrainz#searchAlbums">
+                <i class="bi bi-collection me-1"></i>Browse Albums
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :name, class: "form-label" %>
+            <div class="input-group">
+              <%= form.text_field :name, 
+                  class: "form-control",
+                  data: { musicbrainz_target: "searchField" } %>
+              <button type="button" 
+                      class="btn btn-secondary"
+                      data-action="click->musicbrainz#search">
+                <i class="bi bi-search me-1"></i>Search Info
+              </button>
+            </div>
+          </div>
+
+          <div data-musicbrainz-target="results" class="mb-3">
+            <!-- Results will be displayed here -->
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :year, class: "form-label" %>
+            <%= form.number_field :year, 
+                class: "form-control",
+                data: { musicbrainz_target: "yearField" },
+                min: 1900,
+                max: Time.current.year,
+                placeholder: "Enter year between 1900 and #{Time.current.year}" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :description, class: "form-label" %>
+            <%= form.text_area :description, 
+                class: "form-control", 
+                rows: 3,
+                style: "max-height: 100px; resize: vertical;" %>
+          </div>
+
+          <div class="actions d-flex flex-column flex-sm-row gap-2 gap-sm-3 mt-4 mb-4">
+            <%= form.submit "Update Album", 
+                class: "btn btn-primary w-100 w-sm-auto",
+                style: "background-color: #0d6efd; border-color: #0d6efd;" %>
+            <%= link_to "Cancel", albums_path, 
+                class: "btn w-100 w-sm-auto",
+                style: "background-color: #2c3034; color: #fff; border-color: #373b3e;" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="mb-4 mt-4 mt-md-0">
+          <h5 class="mb-3">Cover Image</h5>
+          <%= form.file_field :cover_image, 
+                            class: "form-control", 
+                            accept: "image/*",
+                            direct_upload: true,
+                            data: { 
+                              controller: "preview",
+                              action: "change->preview#showImage" 
+                            } %>
+          
+          <div class="mt-3">
+            <% if form.object.persisted? && form.object.cover_image.attached? %>
+              <%= image_tag form.object.cover_image, 
+                          id: "coverPreview",
+                          data: { musicbrainz_target: "preview" },
+                          class: "img-thumbnail",
+                          style: "max-height: 200px;" %>
+            <% else %>
+              <img id="coverPreview"
+                  data-musicbrainz_target: "preview"
+                  class="img-thumbnail"
+                  style="max-height: 200px; display: none;">
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %> 
 </div> 

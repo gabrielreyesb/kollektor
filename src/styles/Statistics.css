@@ -1,0 +1,49 @@
+.statistics-card {
+    background-color: #1e2327;  /* Dark background matching the app theme */
+    border: 1px solid #2c3338;  /* Subtle border for separation */
+    border-radius: 8px;
+    padding: 1rem;
+    color: #e6e6e6;  /* Light text color for contrast */
+}
+
+.statistics-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.statistics-card th,
+.statistics-card td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #2c3338;  /* Subtle separators between rows */
+}
+
+.statistics-card th {
+    color: #8b949e;  /* Slightly muted header text */
+    font-weight: 500;
+}
+
+.statistics-card td {
+    color: #e6e6e6;  /* Regular text color */
+}
+
+/* Add these styles to override Bootstrap table styles */
+.statistics-card .table {
+    color: #e6e6e6;  /* Light text color for table content */
+    margin-bottom: 0;
+}
+
+.statistics-card .table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.075);  /* Subtle hover effect */
+    color: #ffffff;
+}
+
+.statistics-card .table thead th {
+    border-bottom-color: #2c3338;
+    color: #8b949e;
+}
+
+.statistics-card .table td,
+.statistics-card .table th {
+    border-top-color: #2c3338;
+} 
