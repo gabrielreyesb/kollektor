@@ -4,8 +4,13 @@ class Api::RecommendationsController < ApplicationController
       # Get a mix of albums from different genres and authors
       @recommended_albums = []
       
-      # Get 3 different genres
-      genre_ids = Genre.joins(:albums).distinct.pluck(:id).sample(3)
+      # Get 4 different genres
+      genre_ids = Genre.joins(:albums)
+                      .group('genres.id')
+                      .having('COUNT(albums.id) > 0')
+                      .distinct
+                      .pluck(:id)
+                      .sample(4)
       
       # For each genre, get a random album from a different author
       genre_ids.each do |genre_id|
@@ -17,13 +22,13 @@ class Api::RecommendationsController < ApplicationController
         @recommended_albums << album if album
       end
 
-      # If we got less than 3 albums, fill with random albums
-      if @recommended_albums.size < 3
+      # Fallback if we got less than 4 albums
+      if @recommended_albums.size < 4
         existing_ids = @recommended_albums.map(&:id)
         remaining = Album.includes(:author, :genre)
                         .where.not(id: existing_ids)
                         .order("RANDOM()")
-                        .limit(3 - @recommended_albums.size)
+                        .limit(4 - @recommended_albums.size)
         @recommended_albums += remaining
       end
 
@@ -33,7 +38,7 @@ class Api::RecommendationsController < ApplicationController
       @recommended_albums = Album.where(genre_id: @genre.id)
                                .includes(:author)
                                .order("RANDOM()")
-                               .limit(3)
+                               .limit(4)
     end
 
     render partial: 'recommendations'
