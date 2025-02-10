@@ -1,37 +1,11 @@
 class Api::RecommendationsController < ApplicationController
   def by_genre
     if params[:id] == 'random'
-      # Get a mix of albums from different genres and authors
-      @recommended_albums = []
-      
-      # Get 4 different genres
-      genre_ids = Genre.joins(:albums)
-                      .group('genres.id')
-                      .having('COUNT(albums.id) > 0')
-                      .distinct
-                      .pluck(:id)
-                      .sample(4)
-      
-      # For each genre, get a random album from a different author
-      genre_ids.each do |genre_id|
-        album = Album.includes(:author, :genre)
-                    .where(genre_id: genre_id)
-                    .where.not(author_id: @recommended_albums.map(&:author_id))
-                    .order("RANDOM()")
-                    .first
-        @recommended_albums << album if album
+      @recommended_albums = if Genre.exists?
+        get_random_recommendations
+      else
+        []
       end
-
-      # Fallback if we got less than 4 albums
-      if @recommended_albums.size < 4
-        existing_ids = @recommended_albums.map(&:id)
-        remaining = Album.includes(:author, :genre)
-                        .where.not(id: existing_ids)
-                        .order("RANDOM()")
-                        .limit(4 - @recommended_albums.size)
-        @recommended_albums += remaining
-      end
-
       @random_selection = true
     else
       @genre = Genre.find(params[:id])
@@ -42,5 +16,37 @@ class Api::RecommendationsController < ApplicationController
     end
 
     render partial: 'recommendations'
+  end
+
+  private
+
+  def get_random_recommendations
+    recommended_albums = []
+    used_genre_ids = []
+    
+    # Try to get 4 albums with different genres
+    4.times do
+      # Exclude already used genres
+      album = Album.includes(:author, :genre)
+                  .where.not(genre_id: used_genre_ids)
+                  .where.not(id: recommended_albums.map(&:id))
+                  .order("RANDOM()")
+                  .first
+
+      if album
+        recommended_albums << album
+        used_genre_ids << album.genre_id
+      else
+        # If we can't find an album with different genre,
+        # just get any random album we haven't selected yet
+        remaining = Album.includes(:author, :genre)
+                        .where.not(id: recommended_albums.map(&:id))
+                        .order("RANDOM()")
+                        .first
+        recommended_albums << remaining if remaining
+      end
+    end
+
+    recommended_albums
   end
 end 

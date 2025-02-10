@@ -12,9 +12,10 @@
     <h6 class="mb-3">Here are some <%= @genre.name %> albums you might enjoy:</h6>
   <% end %>
   
-  <div class="row g-3">
-    <% @recommended_albums.each do |album| %>
-      <div class="col-6 col-md-4">
+  <div class="row g-4">
+    <% @recommended_albums.each_with_index do |album, index| %>
+      <%# Add d-none d-md-block to hide on mobile and special class for the 4th item %>
+      <div class="col-12 col-sm-6 <%= index == 3 ? 'd-md-none' : '' %> col-md-4">
         <div class="card h-100 bg-dark text-white border-secondary">
           <% if album.cover_image.attached? %>
             <%= image_tag album.cover_image, class: "card-img-top", loading: "lazy", style: "aspect-ratio: 1; object-fit: cover;" %>
