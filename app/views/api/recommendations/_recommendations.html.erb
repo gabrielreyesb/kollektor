@@ -29,22 +29,38 @@
                 <i class="bi bi-calendar"></i> <%= album.year %>
               </small>
             </p>
-            <div class="d-flex align-items-center" id="like-button-<%= album.id %>">
-              <%= button_to api_album_rate_path(album), 
-                  method: :post,
-                  class: "btn btn-sm btn-outline-danger",
-                  form: { 
-                    data: { turbo: true },
-                    class: "d-inline-block"
-                  },
-                  params: {
-                    random_selection: @random_selection,
-                    genre_id: @genre&.id,
-                    recommended_ids: @recommended_albums.map(&:id).join(',')
-                  },
-                  remote: true do %>
-                <i class="bi bi-hand-thumbs-up-fill"></i>
-                <span class="ms-1"><%= album.likes_count %></span>
+            <div class="d-flex align-items-center gap-2">
+              <div id="like-button-<%= album.id %>">
+                <%= button_to api_album_rate_path(album), 
+                    method: :post,
+                    class: "btn btn-sm btn-outline-danger",
+                    form: { 
+                      data: { turbo: true },
+                      class: "d-inline-block"
+                    },
+                    params: {
+                      random_selection: @random_selection,
+                      genre_id: @genre&.id,
+                      recommended_ids: @recommended_albums.map(&:id).join(',')
+                    },
+                    remote: true do %>
+                  <i class="bi bi-hand-thumbs-up-fill"></i>
+                  <span class="ms-1"><%= album.likes_count %></span>
+                <% end %>
+              </div>
+              
+              <%= link_to album.wikipedia_url,
+                  class: "btn btn-sm btn-secondary",
+                  target: "_blank",
+                  data: { turbo: false } do %>
+                <i class="bi bi-book"></i>
+              <% end %>
+              
+              <%= link_to album.youtube_music_url,
+                  class: "btn btn-sm btn-danger",
+                  target: "_blank",
+                  data: { turbo: false } do %>
+                <i class="bi bi-youtube"></i>
               <% end %>
             </div>
           </div>
