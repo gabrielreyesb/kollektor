@@ -1,4 +1,5 @@
 class Api::RecommendationsController < ApplicationController
+
   def by_genre
     if params[:id] == 'random'
       @recommended_albums = if Genre.exists?
@@ -10,12 +11,16 @@ class Api::RecommendationsController < ApplicationController
     else
       @genre = Genre.find(params[:id])
       @recommended_albums = Album.where(genre_id: @genre.id)
-                               .includes(:author)
+                               .includes(:author, :genre)
                                .order("RANDOM()")
                                .limit(4)
     end
 
     render partial: 'recommendations'
+  rescue StandardError => e
+    Rails.logger.error("Error in recommendations: #{e.message}")
+    @recommended_albums = []
+    render partial: 'recommendations', status: :internal_server_error
   end
 
   private

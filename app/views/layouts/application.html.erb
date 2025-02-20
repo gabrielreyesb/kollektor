@@ -13,6 +13,13 @@
   </head>
 
   <body>
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+    
     <div class="d-flex min-vh-100" data-controller="sidebar">
       <!-- Sidebar -->
       <nav class="sidebar" data-sidebar-target="sidebar">

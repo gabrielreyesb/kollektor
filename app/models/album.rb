@@ -25,6 +25,10 @@ class Album < ApplicationRecord
               query: "%#{query.downcase}%")
   }
 
+  def increment_likes
+    increment!(:likes_count)
+  end
+
   private
     def cover_image_attached?
       cover_image.attached?

@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     get 'authors', to: 'authors#index'
     get 'recommendations/by_genre/random', to: 'recommendations#by_genre', defaults: { id: 'random' }
     get 'recommendations/by_genre/:id', to: 'recommendations#by_genre'
+    resources :albums, only: [] do
+      post 'rate', to: 'ratings#create'
+    end
   end
 
   resources :albums do
