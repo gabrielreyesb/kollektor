@@ -10,9 +10,10 @@ class Api::RecommendationsController < ApplicationController
       @random_selection = true
     else
       @genre = Genre.find(params[:id])
-      @recommended_albums = Album.where(genre_id: @genre.id)
+      @recommended_albums = Album.joins(:author)  # Join with authors to sort by author name
+                               .where(genre_id: @genre.id)
                                .includes(:author, :genre)
-                               .order("RANDOM()")
+                               .order('authors.name ASC, albums.year ASC')
                                .limit(4)
     end
 
@@ -29,13 +30,13 @@ class Api::RecommendationsController < ApplicationController
     recommended_albums = []
     used_genre_ids = []
     
-    # Try to get 4 albums with different genres
+    # Try to get 4 albums with different genres, favoring less liked albums
     4.times do
-      # Exclude already used genres
+      # Exclude already used genres and selected albums
       album = Album.includes(:author, :genre)
                   .where.not(genre_id: used_genre_ids)
                   .where.not(id: recommended_albums.map(&:id))
-                  .order("RANDOM()")
+                  .weighted_by_likes
                   .first
 
       if album
@@ -43,10 +44,10 @@ class Api::RecommendationsController < ApplicationController
         used_genre_ids << album.genre_id
       else
         # If we can't find an album with different genre,
-        # just get any random album we haven't selected yet
+        # just get any random album we haven't selected yet, still favoring less liked ones
         remaining = Album.includes(:author, :genre)
                         .where.not(id: recommended_albums.map(&:id))
-                        .order("RANDOM()")
+                        .weighted_by_likes
                         .first
         recommended_albums << remaining if remaining
       end

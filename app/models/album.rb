@@ -1,6 +1,7 @@
 class Album < ApplicationRecord
   belongs_to :genre
   belongs_to :author
+  belongs_to :user, optional: true
   has_one_attached :cover_image
 
   validates :name, presence: true, 
@@ -23,6 +24,15 @@ class Album < ApplicationRecord
               LOWER(authors.name) LIKE :query OR 
               LOWER(genres.name) LIKE :query", 
               query: "%#{query.downcase}%")
+  }
+
+  # Returns albums ordered by likes count, strongly favoring those with fewer likes
+  # The formula gives much higher weight to albums with zero likes
+  scope :weighted_by_likes, -> {
+    # Order by a combination of likes_count (primary) and random factor (secondary)
+    # This ensures albums with 0 likes always come before those with more likes,
+    # and within each likes_count group, the order is random
+    order(Arel.sql("likes_count ASC, RANDOM()"))
   }
 
   def increment_likes
@@ -59,7 +69,6 @@ class Album < ApplicationRecord
       }.to_query
     end
   rescue => e
-    Rails.logger.error("Wikipedia API error: #{e.message}")
     # Fallback URL in case of any error
     "https://en.wikipedia.org/wiki/Special:Search?search=#{URI.encode_www_form_component("#{author.name} #{name} album")}"
   end

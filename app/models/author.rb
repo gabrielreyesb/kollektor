@@ -1,6 +1,7 @@
 class Author < ApplicationRecord
   belongs_to :genre
-  belongs_to :country
+  belongs_to :country, optional: true
+  belongs_to :user, optional: true
   has_one_attached :image
   has_many :albums, dependent: :destroy
   

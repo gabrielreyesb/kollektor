@@ -20,6 +20,7 @@ gem "aws-sdk-s3", require: false
 gem 'image_processing', '~> 1.2'
 gem 'kaminari'
 gem 'bootstrap5-kaminari-views'
+gem 'devise'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]

@@ -1,0 +1,52 @@
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+      <h1 class="display-4 mb-4">Welcome to Kollektor</h1>
+      <p class="lead mb-4">Your personal music collection manager</p>
+      
+      <div class="card bg-light mb-4">
+        <div class="card-body">
+          <h2 class="h4 mb-3">Track your favorite albums</h2>
+          <p>Organize your music collection, discover new artists, and keep track of your favorite albums all in one place.</p>
+          
+          <div class="mt-4">
+            <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary me-2" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary" %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="bi bi-music-note-list fs-1 text-primary mb-3"></i>
+              <h3 class="h5">Organize Your Collection</h3>
+              <p class="card-text">Categorize albums by genre, artist, and year.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="bi bi-search fs-1 text-primary mb-3"></i>
+              <h3 class="h5">Discover New Music</h3>
+              <p class="card-text">Get personalized recommendations based on your collection.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <i class="bi bi-graph-up fs-1 text-primary mb-3"></i>
+              <h3 class="h5">Track Your Listening</h3>
+              <p class="card-text">See statistics about your music preferences and habits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

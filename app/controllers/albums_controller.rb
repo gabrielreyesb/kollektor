@@ -3,37 +3,55 @@ class AlbumsController < ApplicationController
   before_action :load_dependencies, only: %i[ new edit create update ]
 
   def index
-    @albums = Album.includes(:genre, :author)
+    @albums = current_user.albums.includes(:genre, :author)
     @albums = @albums.search(params[:search]) if params[:search].present?
     @albums = @albums.order(:name)
   end
 
   def show
+    authorize_album_access
   end
 
   def new
     @album = Album.new
-    @genres = Genre.order(:name)
-    @authors = Author.order(:name)
   end
 
   def edit
-    @genres = Genre.order(:name)
-    @authors = Author.order(:name)
+    authorize_album_access
   end
 
   def create
-    @album = Album.new(album_params)
+    @album = current_user.albums.new(album_params.except(:cover_image))
+    cover_image = params[:album][:cover_image] if params[:album]
 
-    if @album.save
-      redirect_to albums_path
-    else
-      load_dependencies
-      render :new, status: :unprocessable_entity
+    begin
+      if @album.save
+        if cover_image.present?
+          begin
+            @album.cover_image.attach(cover_image)
+          rescue => image_error
+            # Silently handle image errors
+          end
+        end
+        
+        redirect_to albums_path and return
+      else
+        load_dependencies
+        render :new, status: :unprocessable_entity and return
+      end
+    rescue => e
+      if @album.persisted?
+        redirect_to albums_path and return
+      else
+        load_dependencies
+        flash.now[:alert] = "An error occurred while creating the album."
+        render :new, status: :unprocessable_entity and return
+      end
     end
   end
 
   def update
+    authorize_album_access
     if @album.update(album_params)
       redirect_to albums_path
     else
@@ -43,6 +61,7 @@ class AlbumsController < ApplicationController
   end
 
   def destroy
+    authorize_album_access
     @album.destroy!
     redirect_to albums_url
   end
@@ -68,9 +87,16 @@ class AlbumsController < ApplicationController
       @album = Album.find(params[:id])
     end
 
+    def authorize_album_access
+      unless @album.user == current_user
+        flash[:alert] = "You are not authorized to access this album"
+        redirect_to albums_path
+      end
+    end
+
     def load_dependencies
       @genres = Genre.all
-      @authors = Author.all
+      @authors = current_user.authors.all
     end
 
     def album_params

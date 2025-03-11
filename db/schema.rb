@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_20_112100) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -48,8 +48,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_20_112100) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "likes_count", default: 0, null: false
+    t.integer "user_id"
     t.index ["author_id"], name: "index_albums_on_author_id"
     t.index ["genre_id"], name: "index_albums_on_genre_id"
+    t.index ["user_id"], name: "index_albums_on_user_id"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -59,8 +61,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_20_112100) do
     t.integer "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["country_id"], name: "index_authors_on_country_id"
     t.index ["genre_id"], name: "index_authors_on_genre_id"
+    t.index ["user_id"], name: "index_authors_on_user_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -76,12 +80,29 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_20_112100) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_genres_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "albums", "authors"
   add_foreign_key "albums", "genres"
+  add_foreign_key "albums", "users"
   add_foreign_key "authors", "countries"
   add_foreign_key "authors", "genres"
+  add_foreign_key "authors", "users"
+  add_foreign_key "genres", "users"
 end
