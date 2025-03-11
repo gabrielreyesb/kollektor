@@ -1,5 +1,36 @@
 @import "bootstrap";
 
+/* Responsive styling for album cards */
+@media (max-width: 767.98px) {
+  /* Force card info and author info to be visible on mobile */
+  .card-body .card-info {
+    display: block !important;
+  }
+  
+  .card-body .card-info .text-muted.author-info {
+    display: block !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .card-body .card-info .btn-links {
+    display: none !important; 
+  }
+  
+  /* Additional styling for mobile cards */
+  .card-body {
+    padding: 0.5rem !important;
+  }
+  
+  .card-body .card-title {
+    font-size: 0.9rem !important;
+  }
+  
+  .card-body .text-muted {
+    display: block !important;
+    font-size: 0.8rem !important;
+  }
+}
+
 /* Layout */
 .wrapper {
   display: flex;
