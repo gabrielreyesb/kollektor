@@ -20,12 +20,18 @@
               </small>
             </div>
             
-            <!-- Author and buttons are toggleable, but author will be forced visible on mobile -->
+            <!-- Author name always visible -->
+            <p class="mb-1">
+              <small class="text-muted">
+                <i class="bi bi-person"></i> <%= album.author.name %>
+              </small>
+            </p>
+            
+            <!-- Additional info and buttons are toggleable -->
             <div class="card-info" style="display: none;">
               <div class="d-flex justify-content-between align-items-center">
                 <p class="card-text mb-0">
-                  <small class="text-muted author-info">
-                    <i class="bi bi-person"></i> <%= album.author.name %> • 
+                  <small class="text-muted">
                     <i class="bi bi-calendar"></i> <%= album.year %>
                   </small>
                 </p>

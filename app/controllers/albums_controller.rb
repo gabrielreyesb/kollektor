@@ -95,7 +95,7 @@ class AlbumsController < ApplicationController
     end
 
     def load_dependencies
-      @genres = Genre.all
+      @genres = Genre.order(:name)
       @authors = current_user.authors.all
     end
 

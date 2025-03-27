@@ -28,29 +28,16 @@ class Api::RecommendationsController < ApplicationController
 
   def get_random_recommendations
     recommended_albums = []
-    used_genre_ids = []
     
-    # Try to get 4 albums with different genres, favoring less liked albums
+    # Get 4 random albums, favoring less liked ones
     4.times do
-      # Exclude already used genres and selected albums
+      # Get any random album we haven't selected yet, favoring less liked ones
       album = Album.includes(:author, :genre)
-                  .where.not(genre_id: used_genre_ids)
                   .where.not(id: recommended_albums.map(&:id))
                   .weighted_by_likes
                   .first
-
-      if album
-        recommended_albums << album
-        used_genre_ids << album.genre_id
-      else
-        # If we can't find an album with different genre,
-        # just get any random album we haven't selected yet, still favoring less liked ones
-        remaining = Album.includes(:author, :genre)
-                        .where.not(id: recommended_albums.map(&:id))
-                        .weighted_by_likes
-                        .first
-        recommended_albums << remaining if remaining
-      end
+      
+      recommended_albums << album if album
     end
 
     recommended_albums
