@@ -32,8 +32,8 @@ class HomeController < ApplicationController
                 # When filtering by author, order by year
                 base_query.order('albums.year ASC')
               else
-                # Default ordering by author name, then year
-                base_query.joins(:author).order('authors.name ASC, albums.year ASC')
+                # Default ordering by creation date (most recent first)
+                base_query.order('albums.created_at DESC')
               end
 
     # Limit results if no filters are applied
