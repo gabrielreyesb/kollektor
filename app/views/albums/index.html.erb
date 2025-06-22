@@ -33,22 +33,29 @@
       <% @albums.each do |album| %>
         <div class="col">
           <div class="card h-100">
-            <% if album.cover_image.attached? %>
-              <%= image_tag album.cover_image, class: "card-img-top", style: "aspect-ratio: 1; object-fit: cover;" %>
-            <% else %>
-              <div class="bg-light d-flex align-items-center justify-content-center" style="aspect-ratio: 1;">
-                <i class="bi bi-disc text-muted" style="font-size: 2rem;"></i>
-              </div>
+            <%= link_to album_path(album) do %>
+              <% if album.cover_image.attached? %>
+                <%= image_tag album.cover_image, class: "card-img-top", style: "aspect-ratio: 1; object-fit: cover;" %>
+              <% else %>
+                <div class="bg-light d-flex align-items-center justify-content-center" style="aspect-ratio: 1;">
+                  <i class="bi bi-disc text-muted" style="font-size: 2rem;"></i>
+                </div>
+              <% end %>
             <% end %>
             
             <div class="card-body">
-              <h5 class="card-title"><%= album.name %></h5>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h5 class="card-title mb-0 text-truncate"><%= album.name %></h5>
+                <small class="text-white ms-2">
+                  <i class="bi bi-headphones"></i>
+                  <%= album.likes_count %>
+                </small>
+              </div>
               <p class="card-text text-muted small mb-2">
                 <i class="bi bi-music-note me-1"></i><%= album.genre.name %> •
                 <i class="bi bi-person me-1"></i><%= album.author.name %> •
                 <i class="bi bi-calendar me-1"></i><%= album.year %>
               </p>
-              <p class="card-text"><%= truncate(album.description, length: 100) %></p>
             </div>
             
             <div class="card-footer bg-transparent border-top-0">
@@ -86,7 +93,6 @@
   .card {
     transition: transform 0.2s ease;
     border: none;
-    background: #f8f9fa;
   }
 
   .card:hover {

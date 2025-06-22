@@ -22,5 +22,11 @@ class StatisticsController < ApplicationController
                             .order(decade_calc)
                             .count
                             .transform_keys { |k| "#{k}s" }
+
+    # Genres by total likes
+    @genres_by_likes = Genre.joins(:albums)
+                           .group('genres.name')
+                           .sum('albums.likes_count')
+                           .sort_by { |_genre, total_likes| -total_likes }
   end
 end 

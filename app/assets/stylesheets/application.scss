@@ -31,6 +31,13 @@
   }
 }
 
+/* Ensure visibility on larger screens */
+@media (min-width: 768px) {
+  .card-body .text-muted {
+    display: block !important;
+  }
+}
+
 /* Layout */
 .wrapper {
   display: flex;
@@ -432,5 +439,55 @@ body {
   
   .pagination {
     display: none;
+  }
+}
+
+/* Get Lucky Button Styles */
+.get-lucky-container {
+  position: fixed;
+  top: 2rem;
+  right: 20px;
+  z-index: 1040;
+}
+
+.btn-get-lucky {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  animation: pulse 2s infinite;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  &:hover {
+    transform: scale(1.05);
+    animation: none;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* Larger button for bigger screens */
+@media (min-width: 768px) {
+  .btn-get-lucky {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* Adjust position for very small screens to avoid mobile navbar */
+@media (max-width: 767.98px) {
+  .get-lucky-container {
+    top: 70px; /* Adjust if it overlaps with the mobile navbar */
+    right: 15px;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 102, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
   }
 }

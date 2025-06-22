@@ -37,7 +37,7 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   # Highlight code that triggered database queries in logs.
-  config.active_record.verbose_query_logs = true
+  config.active_record.verbose_query_logs = false
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
@@ -53,4 +53,11 @@ Rails.application.configure do
   
   # Devise mailer configuration
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  # Log level. The default log level in production is :info.
+  # In development, you may want to set it to :debug to get verbose logging.
+  config.log_level = :info
+
+  # Prepend all log lines with the following tags.
+  config.log_tags = [ :request_id ]
 end

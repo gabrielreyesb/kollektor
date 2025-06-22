@@ -9,21 +9,18 @@ class HomeController < ApplicationController
     end
     
     # Start with a base query that includes the necessary associations
-    base_query = current_user.albums.includes(:author, :genre)
+    base_query = current_user.albums.includes(:author, :genre).with_attached_cover_image
 
     # Apply filters if present
     if params[:genre_id].present?
-      Rails.logger.debug "Filtering by genre_id: #{params[:genre_id]}"
       base_query = base_query.where(genre_id: params[:genre_id]) 
     end
     
     if params[:author_id].present?
-      Rails.logger.debug "Filtering by author_id: #{params[:author_id]}"
       base_query = base_query.where(author_id: params[:author_id]) 
     end
     
     if params[:album_id].present?
-      Rails.logger.debug "Filtering by album_id: #{params[:album_id]}"
       base_query = base_query.where(id: params[:album_id]) 
     end
 
@@ -38,12 +35,21 @@ class HomeController < ApplicationController
 
     # Limit results if no filters are applied
     if !params[:genre_id].present? && !params[:author_id].present? && !params[:album_id].present?
-      Rails.logger.debug "No filters applied, limiting to 24 albums"
       @albums = @albums.limit(24)
     end
 
     # Set title variables for the view
     @title = get_title
+  end
+
+  def get_lucky
+    @recommended_albums = if Genre.exists?
+      get_random_recommendations
+    else
+      []
+    end
+    @random_selection = true
+    @title = "Random Suggestions"
   end
 
   private
@@ -56,6 +62,23 @@ class HomeController < ApplicationController
       @show_mood_prompt = true
       cookies[:last_mood_check] = Time.current
     end
+  end
+
+  def get_random_recommendations
+    recommended_albums = []
+    
+    # Get 4 random albums, favoring less liked ones
+    4.times do
+      # Get any random album we haven't selected yet, favoring less liked ones
+      album = Album.includes(:author, :genre).with_attached_cover_image
+                  .where.not(id: recommended_albums.map(&:id))
+                  .weighted_by_likes
+                  .first
+      
+      recommended_albums << album if album
+    end
+
+    recommended_albums
   end
 
   def get_title

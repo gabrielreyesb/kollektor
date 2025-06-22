@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   resources :albums
   resources :countries
 
+  # Get Lucky functionality - direct access to random recommendations
+  get 'get_lucky', to: 'home#get_lucky'
+
   namespace :api do
     get 'musicbrainz/search'
     get 'musicbrainz/release/:id', to: 'musicbrainz#release'

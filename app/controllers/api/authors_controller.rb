@@ -6,9 +6,6 @@ class Api::AuthorsController < ApplicationController
                 Author.order(:name)
               end
     
-    Rails.logger.info "Genre ID: #{params[:genre_id]}"
-    Rails.logger.info "Found authors: #{@authors.pluck(:name)}"
-    
     render json: @authors.select(:id, :name)
   end
 end 

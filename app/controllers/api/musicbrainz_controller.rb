@@ -33,14 +33,9 @@ class Api::MusicbrainzController < ApplicationController
 
   def browse_artist_albums
     artist = params[:artist]
-    
-    Rails.logger.debug "============ MUSICBRAINZ BROWSE DEBUG ============"
-    Rails.logger.debug "Searching for artist: #{artist}"
-    
+
     if artist.blank?
-      Rails.logger.debug "Artist parameter is blank"
-      render json: { error: "Artist parameter is required" }, status: :bad_request
-      return
+      return render json: { releases: [] }
     end
 
     url = "https://musicbrainz.org/ws/2/release"
@@ -75,13 +70,8 @@ class Api::MusicbrainzController < ApplicationController
         }, status: :service_unavailable
       end
     rescue => e
-      Rails.logger.error "Exception while fetching from MusicBrainz: #{e.message}"
-      render json: { 
-        error: "Error connecting to MusicBrainz",
-        details: e.message 
-      }, status: :service_unavailable
+      render json: { error: "An error occurred" }, status: :internal_server_error
     end
-    Rails.logger.debug "=============================================="
   end
 
   def search_specific_album
