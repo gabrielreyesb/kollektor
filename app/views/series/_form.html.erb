@@ -1,0 +1,140 @@
+<%= form_with(model: series, local: true, html: { multipart: true, "data-controller": "imdb" }) do |form| %>
+  <% if series.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(series.errors.count, "error") %> prohibited this series or movie from being saved:</h4>
+      <ul>
+        <% series.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- IMDB Search Section -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="bi bi-search"></i> Search IMDB for Series or Movie
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Search for a TV series or movie:</label>
+        <div class="input-group">
+          <input type="text" 
+                 class="form-control" 
+                 placeholder="Enter series or movie name (e.g., 'Breaking Bad', 'The Godfather')"
+                 data-imdb-target="searchInput"
+                 data-action="input->imdb#search">
+          <button type="button" 
+                  class="btn btn-outline-secondary" 
+                  data-action="click->imdb#search">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Search Results -->
+      <div data-imdb-target="results"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="mb-3">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, 
+            class: "form-control", 
+            required: true,
+            data: { imdb_target: "nameInput" } %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :description, class: "form-label" %>
+        <%= form.text_area :description, 
+            class: "form-control", 
+            rows: 3,
+            data: { imdb_target: "descriptionInput" } %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :comments, "Your Comments", class: "form-label" %>
+        <%= form.text_area :comments, class: "form-control", rows: 3 %>
+      </div>
+
+      <div class="form-check mb-3">
+        <%= form.check_box :seen, class: "form-check-input" %>
+        <%= form.label :seen, "Mark as seen", class: "form-check-label" %>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <%= form.label :year, "Year of Release", class: "form-label" %>
+            <%= form.number_field :year, 
+                class: "form-control", 
+                min: 1900, 
+                max: Date.current.year + 1, 
+                required: true,
+                data: { imdb_target: "yearInput" } %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <%= form.label :genre_id, class: "form-label" %>
+            <%= form.collection_select :genre_id, 
+                @genres, 
+                :id, :name, 
+                { prompt: "Select a genre" }, 
+                { class: "form-select", required: true } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :cover_image, class: "form-label" %>
+        <%= form.file_field :cover_image, 
+            class: "form-control", 
+            accept: "image/*",
+            data: { imdb_target: "coverImageInput" } %>
+        <img data-imdb-target="posterPreview" src="#" alt="Poster preview" style="display:none; max-width: 200px; margin-top: 10px;" />
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="mb-3">
+        <%= form.label :actor_ids, "Cast & Crew", class: "form-label" %>
+        <%= form.collection_select :actor_ids, @actors, :id, :name, 
+            { prompt: "Select one or more actors" }, 
+            { multiple: true, data: { controller: 'tom-select' } } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <%= link_to "Back to Series & Movies", series_index_path, class: "btn btn-secondary" %>
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+function addCastMember() {
+  const container = document.getElementById('cast-container');
+  const castMember = document.createElement('div');
+  castMember.className = 'cast-member mb-2';
+  castMember.innerHTML = `
+    <div class="input-group">
+      <input type="text" name="series[cast][][name]" class="form-control" placeholder="Actor/Actress name">
+      <input type="text" name="series[cast][][role]" class="form-control" placeholder="Role">
+      <button type="button" class="btn btn-outline-danger remove-cast" onclick="removeCastMember(this)">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  `;
+  container.appendChild(castMember);
+}
+
+function removeCastMember(button) {
+  button.closest('.cast-member').remove();
+}
+</script> 

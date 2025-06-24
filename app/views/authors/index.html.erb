@@ -2,7 +2,7 @@
   <!-- Header section with responsive layout -->
   <div class="mb-4">
     <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
-      <h1 class="mb-0">Authors</h1>
+      <h1 class="mb-0">Manage Authors</h1>
       
       <div class="d-flex gap-2 flex-grow-1 flex-sm-grow-0" style="max-width: 100%;">
         <%= form_tag authors_path, method: :get, class: "flex-grow-1 flex-sm-grow-0", style: "max-width: 300px;" do %>
@@ -18,11 +18,11 @@
           </div>
         <% end %>
 
-        <%= link_to new_author_path, 
+        <%= link_to new_author_path,
             class: "btn btn-primary d-flex align-items-center gap-2",
             style: "white-space: nowrap;" do %>
           <i class="bi bi-plus-lg"></i>
-          <span>Add author</span>
+          <span>Add Author</span>
         <% end %>
       </div>
     </div>
@@ -40,7 +40,6 @@
             <th width="150">Actions</th>
           </tr>
         </thead>
-
         <tbody>
           <% @authors.each do |author| %>
             <tr>

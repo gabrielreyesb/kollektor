@@ -9,6 +9,8 @@
 #   end
 
 require_relative 'seeds/countries'
+require_relative 'seeds/collection_types'
+require_relative 'seeds/genres'
 
 # Countries seed data
 countries = [

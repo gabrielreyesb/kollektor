@@ -1,4 +1,5 @@
 <div class="container-fluid">
-  <h1 class="mb-4">Edit Author</h1>
-  <%= render "form", author: @author %>
+  <h1 class="mb-4"><%= @collection_type == 'Series' ? 'Edit Actor' : 'Edit Author' %></h1>
+
+  <%= render 'form', author: @author %>
 </div> 

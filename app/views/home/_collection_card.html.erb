@@ -1,0 +1,39 @@
+<%
+  path = case collection_type.name
+         when "Music"
+           music_path
+         when "Series"
+           series_collection_path
+         else
+           "#"
+         end
+  
+  icon = case collection_type.name
+         when "Music"
+           "bi-music-note-beamed"
+         when "Series"
+           "bi-film"
+         when "Books"
+           "bi-book"
+         else
+           "bi-collection"
+         end
+%>
+
+<div class="col">
+  <%= link_to path, class: "card h-100 text-decoration-none text-white", style: "background-color: #212529; border: 1px solid #495057;" do %>
+    <div class="card-body text-center d-flex flex-column justify-content-center">
+      <% if collection_type.name == "Series" && first_series&.cover_image&.attached? %>
+        <%= image_tag first_series.cover_image, style: "aspect-ratio: 3/4; object-fit: cover; width: 100%; height: 450px;" %>
+      <% else %>
+        <i class="bi <%= icon %>" style="font-size: 3rem;"></i>
+      <% end %>
+      <h4 class="card-title mt-3">
+        <%= collection_type.name == "Series" ? "Series & Movies" : collection_type.name %>
+      </h4>
+      <p class="card-text text-muted">
+        <%= collection_type.name == "Series" ? "TV series, movies, and episodic content" : collection_type.description %>
+      </p>
+    </div>
+  <% end %>
+</div> 

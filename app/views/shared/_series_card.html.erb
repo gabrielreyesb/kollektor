@@ -1,0 +1,39 @@
+<%# Usage: render 'shared/series_card', series: series, link: true %>
+<% card_content = capture do %>
+  <div class="series-poster-card card h-100 text-white bg-dark border-secondary position-relative">
+    <% if series.cover_image.attached? %>
+      <div class="series-poster-img-wrapper">
+        <%= image_tag series.cover_image, class: 'series-poster-img', alt: series.name %>
+      </div>
+    <% else %>
+      <div class="series-poster-img-wrapper d-flex align-items-center justify-content-center bg-secondary">
+        <i class="bi bi-film" style="font-size: 3rem;"></i>
+      </div>
+    <% end %>
+    <div class="card-body p-2 d-flex align-items-center justify-content-between">
+      <div>
+        <h6 class="card-title mb-1 text-truncate"><%= series.name %></h6>
+        <p class="card-text text-muted small mb-2">
+          <i class="bi bi-film me-1"></i><%= series.genre.name %> •
+          <i class="bi bi-calendar me-1"></i><%= series.year %>
+        </p>
+      </div>
+      <% unless series.seen? %>
+        <%= form_with(url: series_path(series), method: :patch, local: true, class: '', style: 'margin-left: 0.5rem;' ) do %>
+          <%= hidden_field_tag 'series[seen]', true %>
+          <%= hidden_field_tag :return_to, request.fullpath %>
+          <button type="submit" class="btn btn-sm btn-outline-light p-1" title="Mark as seen" style="border-radius: 50%;">
+            <i class="bi bi-eye"></i>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% if local_assigns[:link] && series.seen? %>
+  <%= link_to series_path(series), class: 'text-decoration-none' do %>
+    <%= card_content %>
+  <% end %>
+<% else %>
+  <%= card_content %>
+<% end %> 

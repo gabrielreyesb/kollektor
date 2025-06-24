@@ -10,6 +10,8 @@
     </div>
   <% end %>
 
+  <%= form.hidden_field :collection_type, value: @collection_type %>
+
   <div class="row">
     <div class="col-md-8">
       <div class="mb-3">
@@ -26,6 +28,6 @@
 
   <div class="actions">
     <%= form.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", countries_path, class: "btn btn-light ms-2" %>
+    <%= link_to "Cancel", countries_path(collection_type: @collection_type), class: "btn btn-secondary" %>
   </div>
 <% end %> 

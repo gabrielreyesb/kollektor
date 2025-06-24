@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  get 'actors/index'
+  get 'actors/new'
+  get 'actors/create'
+  get 'actors/edit'
+  get 'actors/update'
+  get 'actors/destroy'
+  get 'series_collection/index'
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -9,7 +16,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  root 'home#index'  # or whatever your root controller/action is
+  root 'home#index'  # Collection selector dashboard
+  get 'music', to: 'music#index'  # Music collection home
+  get 'series_collection', to: 'series_collection#index' # Series collection home
+  get 'tv_shows', to: redirect('/series_collection')
+  resources :series
+  resources :actors
+  
   resources :genres
   resources :authors
   resources :albums
@@ -22,6 +35,10 @@ Rails.application.routes.draw do
     get 'musicbrainz/search'
     get 'musicbrainz/release/:id', to: 'musicbrainz#release'
     get 'musicbrainz/cover/:id', to: 'musicbrainz#cover'
+    get 'imdb/search'
+    get 'imdb/details/:id', to: 'imdb#details'
+    get 'imdb/poster/:id', to: 'imdb#poster'
+    get 'imdb/poster_proxy', to: 'imdb#poster_proxy'
     get 'authors', to: 'authors#index'
     get 'recommendations/by_genre/random', to: 'recommendations#by_genre', defaults: { id: 'random' }
     get 'recommendations/by_genre/:id', to: 'recommendations#by_genre'

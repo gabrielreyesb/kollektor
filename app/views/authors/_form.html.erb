@@ -1,6 +1,6 @@
 <%= form_with(model: author, class: "mb-4") do |form| %>
   <% if author.errors.any? %>
-    <div class="alert alert-danger">
+    <div style="color: red;">
       <h2><%= pluralize(author.errors.count, "error") %> prohibited this author from being saved:</h2>
       <ul>
         <% author.errors.each do |error| %>
@@ -11,34 +11,35 @@
   <% end %>
 
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="mb-3">
         <%= form.label :name, class: "form-label" %>
-        <%= form.text_field :name, class: "form-control" %>
+        <%= form.text_field :name, class: "form-control", required: true %>
       </div>
 
       <div class="mb-3">
         <%= form.label :description, class: "form-label" %>
-        <%= form.text_area :description, class: "form-control", rows: 5 %>
+        <%= form.text_area :description, class: "form-control", rows: 3 %>
       </div>
-
+    </div>
+    <div class="col-md-6">
       <div class="mb-3">
         <%= form.label :genre_id, "Genre", class: "form-label" %>
         <%= form.collection_select :genre_id, @genres, :id, :name, 
             { prompt: "Select a genre" }, 
-            { class: "form-select" } %>
+            { class: "form-select", required: true } %>
       </div>
 
       <div class="mb-3">
         <%= form.label :country_id, "Country", class: "form-label" %>
         <%= form.collection_select :country_id, @countries, :id, :name, 
             { prompt: "Select a country" }, 
-            { class: "form-select" } %>
+            { class: "form-select", required: true } %>
       </div>
     </div>
   </div>
 
-  <div class="actions">
+  <div class="actions mt-4">
     <%= form.submit class: "btn btn-primary" %>
     <%= link_to "Cancel", authors_path, class: "btn btn-light ms-2" %>
   </div>

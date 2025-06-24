@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <% if @series.cover_image.attached? %>
+          <%= image_tag @series.cover_image, class: "card-img-top", style: "aspect-ratio: 3/4; object-fit: cover; width: 100%; height: 450px;" %>
+        <% else %>
+          <div class="bg-light d-flex align-items-center justify-content-center" style="aspect-ratio: 1;">
+            <i class="bi bi-film text-muted" style="font-size: 4rem;"></i>
+          </div>
+        <% end %>
+        <div class="card-body">
+          <div class="d-grid gap-2">
+            <%= link_to edit_series_path(@series), class: "btn btn-primary" do %>
+              <i class="bi bi-pencil me-2"></i>Edit Series or Movie
+            <% end %>
+            <%= link_to series_index_path, class: "btn btn-outline-secondary" do %>
+              <i class="bi bi-arrow-left me-2"></i>Back to Series & Movies
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="h2 mb-0"><%= @series.name %></h1>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Genre:</strong> <%= @series.genre.name %>
+            </div>
+            <div class="col-md-6">
+              <strong>Year:</strong> <%= @series.year %>
+            </div>
+          </div>
+          
+          <% if @series.description.present? %>
+            <div class="mb-3">
+              <strong>Description:</strong>
+              <p class="mt-2"><%= @series.description %></p>
+            </div>
+          <% end %>
+          
+          <% if @series.comments.present? %>
+            <div class="mb-3">
+              <strong>Your Comments:</strong>
+              <p class="mt-2"><%= @series.comments %></p>
+            </div>
+          <% end %>
+          
+          <% if @series.actors.present? && @series.actors.any? %>
+            <div class="mb-3">
+              <strong>Cast & Crew:</strong>
+              <div class="row mt-2">
+                <% @series.actors.each do |actor| %>
+                  <div class="col-auto mb-2">
+                    <span class="badge bg-secondary"><%= actor.name %></span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

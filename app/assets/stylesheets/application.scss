@@ -1,5 +1,8 @@
 @import "bootstrap";
 
+/* TomSelect CSS - using CDN version */
+@import url("https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css");
+
 /* Responsive styling for album cards */
 @media (max-width: 767.98px) {
   /* Force card info and author info to be visible on mobile */
@@ -490,4 +493,32 @@ body {
   100% {
     box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
   }
+}
+
+.series-poster-card {
+  background-color: #212529;
+  border: 1px solid #495057;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.2);
+    border-color: #58a6ff;
+  }
+}
+
+.series-poster-img-wrapper {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: #222;
+}
+
+.series-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

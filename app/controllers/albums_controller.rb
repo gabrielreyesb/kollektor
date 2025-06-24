@@ -1,4 +1,6 @@
 class AlbumsController < ApplicationController
+  include MusicSidebarData
+  
   before_action :set_album, only: %i[ show edit update destroy ]
   before_action :load_dependencies, only: %i[ new edit create update ]
 
@@ -95,8 +97,8 @@ class AlbumsController < ApplicationController
     end
 
     def load_dependencies
-      @genres = Genre.order(:name)
-      @authors = current_user.authors.all
+      @genres = Genre.by_collection_type('Music').order(:name)
+      @authors = current_user.authors.by_collection_type('Music').all
     end
 
     def album_params

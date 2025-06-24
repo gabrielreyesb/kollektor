@@ -8,38 +8,15 @@ class HomeController < ApplicationController
       render 'welcome' and return
     end
     
-    # Start with a base query that includes the necessary associations
-    base_query = current_user.albums.includes(:author, :genre).with_attached_cover_image
+    # Show collection selector dashboard
+    @collection_types = CollectionType.all
+    @first_series = current_user.series.where(seen: [false, nil]).order(:created_at).first
+    render 'collections'
+  end
 
-    # Apply filters if present
-    if params[:genre_id].present?
-      base_query = base_query.where(genre_id: params[:genre_id]) 
-    end
-    
-    if params[:author_id].present?
-      base_query = base_query.where(author_id: params[:author_id]) 
-    end
-    
-    if params[:album_id].present?
-      base_query = base_query.where(id: params[:album_id]) 
-    end
-
-    # Apply ordering based on filters
-    @albums = if params[:author_id].present?
-                # When filtering by author, order by year
-                base_query.order('albums.year ASC')
-              else
-                # Default ordering by creation date (most recent first)
-                base_query.order('albums.created_at DESC')
-              end
-
-    # Limit results if no filters are applied
-    if !params[:genre_id].present? && !params[:author_id].present? && !params[:album_id].present?
-      @albums = @albums.limit(24)
-    end
-
-    # Set title variables for the view
-    @title = get_title
+  def albums
+    # Legacy route - redirect to music collection
+    redirect_to music_path
   end
 
   def get_lucky

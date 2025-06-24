@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="mb-4">
+    <h1 class="h2">Latest Added</h1>
+  </div>
+
+  <div class="row g-3">
+    <% @series.each do |series| %>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <%= render 'shared/series_card', series: series, link: true %>
+      </div>
+    <% end %>
+  </div>
+</div>

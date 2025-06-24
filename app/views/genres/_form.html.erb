@@ -20,8 +20,10 @@
     <%= form.text_area :description, class: "form-control", rows: 3 %>
   </div>
 
+  <%= form.hidden_field :collection_type_id, value: genre.collection_type_id %>
+
   <div class="actions">
     <%= form.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", genres_path, class: "btn btn-light ms-2" %>
+    <%= link_to "Cancel", genres_path(collection_type: genre.collection_type&.name), class: "btn btn-light ms-2" %>
   </div>
 <% end %> 

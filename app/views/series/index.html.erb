@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="mb-4">
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+      <h1 class="mb-0">Manage Series & Movies</h1>
+
+      <div class="d-flex gap-2 flex-grow-1 flex-sm-grow-0" style="max-width: 100%;">
+        <%= form_tag series_index_path, method: :get, class: "flex-grow-1 flex-sm-grow-0", style: "max-width: 300px;" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search],
+                class: "form-control bg-dark text-white border-secondary",
+                placeholder: "Search series & movies..." %>
+            <% if params[:search].present? %>
+              <%= link_to series_index_path, class: "btn btn-outline-secondary" do %>
+                <i class="bi bi-x-lg"></i>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= link_to new_series_path,
+            class: "btn btn-primary d-flex align-items-center gap-2",
+            style: "white-space: nowrap;" do %>
+          <i class="bi bi-plus-lg"></i>
+          <span>Add Series or Movie</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @series.any? %>
+    <div class="row g-3">
+      <% @series.each do |series| %>
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+          <%= render 'shared/series_card', series: series, link: true %>
+          <div class="card-footer bg-transparent border-top-0">
+            <div class="btn-group btn-group-sm w-100">
+              <%= link_to edit_series_path(series), class: "btn btn-outline-primary" do %>
+                <i class="bi bi-pencil"></i>
+              <% end %>
+              <%= link_to series, 
+                  class: "btn btn-outline-danger",
+                  data: { turbo_method: :delete, 
+                          turbo_confirm: "Are you sure?" } do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-5">
+      <div class="display-6 text-muted mb-4">
+        <i class="bi bi-film" style="font-size: 4rem;"></i>
+      </div>
+      <h3 class="text-muted mb-4">No series or movies found</h3>
+      <%= link_to new_series_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-lg me-2"></i>Add your first series or movie
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,2 @@
+module SeriesCollectionHelper
+end

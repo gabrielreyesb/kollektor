@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_24_003147) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -37,6 +37,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "actors", force: :cascade do |t|
+    t.string "name"
+    t.text "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "actors_series", id: false, force: :cascade do |t|
+    t.integer "actor_id", null: false
+    t.integer "series_id", null: false
   end
 
   create_table "albums", force: :cascade do |t|
@@ -67,6 +79,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
     t.index ["user_id"], name: "index_authors_on_user_id"
   end
 
+  create_table "authors_series", id: false, force: :cascade do |t|
+    t.integer "series_id", null: false
+    t.integer "author_id", null: false
+  end
+
+  create_table "collection_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_collection_types_on_name", unique: true
+  end
+
   create_table "countries", force: :cascade do |t|
     t.string "name"
     t.string "code", limit: 2
@@ -81,7 +106,37 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "collection_type_id", null: false
+    t.index ["collection_type_id"], name: "index_genres_on_collection_type_id"
     t.index ["user_id"], name: "index_genres_on_user_id"
+  end
+
+  create_table "series", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "year"
+    t.integer "genre_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comments"
+    t.boolean "seen"
+    t.index ["genre_id"], name: "index_series_on_genre_id"
+    t.index ["user_id"], name: "index_series_on_user_id"
+  end
+
+  create_table "tv_shows", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "year"
+    t.integer "genre_id", null: false
+    t.integer "author_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_tv_shows_on_author_id"
+    t.index ["genre_id"], name: "index_tv_shows_on_genre_id"
+    t.index ["user_id"], name: "index_tv_shows_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -104,5 +159,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_171448) do
   add_foreign_key "authors", "countries"
   add_foreign_key "authors", "genres"
   add_foreign_key "authors", "users"
+  add_foreign_key "genres", "collection_types"
   add_foreign_key "genres", "users"
+  add_foreign_key "series", "genres"
+  add_foreign_key "series", "users"
+  add_foreign_key "tv_shows", "authors"
+  add_foreign_key "tv_shows", "genres"
+  add_foreign_key "tv_shows", "users"
 end

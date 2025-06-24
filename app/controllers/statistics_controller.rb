@@ -1,4 +1,6 @@
 class StatisticsController < ApplicationController
+  include MusicSidebarData
+  
   def index
     # Total albums count
     @total_albums = Album.count
