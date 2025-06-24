@@ -153,6 +153,12 @@ export default class extends Controller {
       this.nameInputTarget.value = series.Title
     }
     
+    // Set imdb_id hidden field if present
+    const imdbIdInput = this.element.querySelector('[data-imdb-target="imdbIdInput"]');
+    if (imdbIdInput && series.imdbID) {
+      imdbIdInput.value = series.imdbID;
+    }
+    
     if (this.hasDescriptionInputTarget) {
       this.descriptionInputTarget.value = series.Plot || ''
     }

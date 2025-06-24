@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_24_003147) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_24_220912) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -111,6 +111,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_003147) do
     t.index ["user_id"], name: "index_genres_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "series_id", null: false
+    t.text "message"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["series_id"], name: "index_notifications_on_series_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "series", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -121,6 +132,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_003147) do
     t.datetime "updated_at", null: false
     t.text "comments"
     t.boolean "seen"
+    t.string "imdb_id"
+    t.datetime "snoozed_at"
     t.index ["genre_id"], name: "index_series_on_genre_id"
     t.index ["user_id"], name: "index_series_on_user_id"
   end
@@ -161,6 +174,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_24_003147) do
   add_foreign_key "authors", "users"
   add_foreign_key "genres", "collection_types"
   add_foreign_key "genres", "users"
+  add_foreign_key "notifications", "series"
+  add_foreign_key "notifications", "users"
   add_foreign_key "series", "genres"
   add_foreign_key "series", "users"
   add_foreign_key "tv_shows", "authors"

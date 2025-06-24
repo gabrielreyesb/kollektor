@@ -10,4 +10,5 @@ class User < ApplicationRecord
   has_many :genres, dependent: :destroy
   has_many :tv_shows, dependent: :destroy
   has_many :series, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 end

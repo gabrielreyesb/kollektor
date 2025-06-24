@@ -21,6 +21,9 @@ gem 'image_processing', '~> 1.2'
 gem 'kaminari'
 gem 'bootstrap5-kaminari-views'
 gem 'devise'
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'dotenv-rails', groups: [:development, :test]
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]

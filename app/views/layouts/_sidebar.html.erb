@@ -6,32 +6,41 @@
                         (['genres', 'authors', 'countries'].include?(controller_name) && @collection_type == 'Series')
   %>
 
-  <div style="padding: 12px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
-    <%= image_tag "logo.png", style: "height: 32px; width: auto; display: inline-block;" %>
+  <div style="padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+    <div class="d-flex align-items-center justify-content-between">
+      <%= image_tag "logo.png", style: "height: 32px; width: auto; display: inline-block;" %>
+      <% # Determine the other collection's path %>
+      <% other_collection_path =
+           if controller_name == 'music'
+             series_collection_path
+           else
+             music_path
+           end
+      %>
+      <%= link_to other_collection_path,
+          class: "text-white-50 ms-2",
+          style: "font-size: 1.6rem;",
+          title: "Switch Collection" do %>
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+      <% end %>
+    </div>
   </div>
 
   <% if @title.present? && !current_page?(root_path) %>
     <div class="sidebar-title px-3 py-3 text-center position-relative">
       <%
-        path, icon = if is_series_context
-                       [series_collection_path, 'bi-film']
-                     else
-                       [music_path, 'bi-music-note-beamed']
-                     end
+        path, icon, label = if is_series_context
+                              [series_collection_path, 'bi-film', 'Series & Movies']
+                            else
+                              [music_path, 'bi-music-note-beamed', 'Music']
+                            end
       %>
 
       <%= link_to path, class: "text-white text-decoration-none" do %>
         <h5 class="mb-0" style="font-weight: 300;">
           <i class="bi <%= icon %> me-2"></i>
-          <%= @title %>
+          <%= label %>
         </h5>
-      <% end %>
-
-      <%= link_to root_path,
-          class: "text-white-50",
-          style: "position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;",
-          title: "Back to Collections" do %>
-        <i class="bi bi-grid-3x3-gap-fill"></i>
       <% end %>
     </div>
   <% end %>

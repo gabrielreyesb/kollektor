@@ -10,23 +10,35 @@
         <i class="bi bi-film" style="font-size: 3rem;"></i>
       </div>
     <% end %>
-    <div class="card-body p-2 d-flex align-items-center justify-content-between">
-      <div>
-        <h6 class="card-title mb-1 text-truncate"><%= series.name %></h6>
-        <p class="card-text text-muted small mb-2">
-          <i class="bi bi-film me-1"></i><%= series.genre.name %> •
-          <i class="bi bi-calendar me-1"></i><%= series.year %>
-        </p>
-      </div>
-      <% unless series.seen? %>
-        <%= form_with(url: series_path(series), method: :patch, local: true, class: '', style: 'margin-left: 0.5rem;' ) do %>
-          <%= hidden_field_tag 'series[seen]', true %>
-          <%= hidden_field_tag :return_to, request.fullpath %>
-          <button type="submit" class="btn btn-sm btn-outline-light p-1" title="Mark as seen" style="border-radius: 50%;">
-            <i class="bi bi-eye"></i>
-          </button>
+    <div class="card-body p-2">
+      <h6 class="card-title mb-1 text-truncate"><%= series.name %></h6>
+      <p class="card-text text-muted small mb-2">
+        <i class="bi bi-film me-1"></i><%= series.genre.name %> •
+        <i class="bi bi-calendar me-1"></i><%= series.year %>
+      </p>
+      <div class="series-card-actions">
+        <%= link_to series.imdb_search_url, target: "_blank", rel: "noopener", class: "btn btn-sm btn-warning btn-imdb", data: { turbo: false } do %>
+          <i class="bi bi-film"></i> IMDB
         <% end %>
-      <% end %>
+        <% unless series.seen? %>
+          <%= form_with(url: series_path(series), method: :patch, local: true, class: '', style: 'margin-left: 0.5rem;' ) do %>
+            <%= hidden_field_tag 'series[seen]', true %>
+            <%= hidden_field_tag :return_to, request.fullpath %>
+            <button type="submit" class="btn btn-sm btn-outline-light p-1" title="Mark as seen" style="border-radius: 50%;">
+              <i class="bi bi-eye"></i>
+            </button>
+          <% end %>
+        <% end %>
+        <% if series.snoozed_at.present? %>
+          <%= button_to unsnooze_series_path(series), method: :patch, class: "btn btn-sm btn-outline-info ms-2", form: { data: { turbo: false } } do %>
+            <i class="bi bi-alarm"></i> Unsnooze
+          <% end %>
+        <% else %>
+          <%= button_to snooze_series_path(series), method: :patch, class: "btn btn-sm btn-info ms-2", form: { data: { turbo: false } } do %>
+            <i class="bi bi-alarm"></i> Snooze
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

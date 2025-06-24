@@ -1,0 +1,1 @@
+Rails.application.config.snooze_reminder_minutes = 1 # Set to 1 for testing; use 6.months.to_i / 60 for production 

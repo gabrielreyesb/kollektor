@@ -1,6 +1,6 @@
 class SeriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_series, only: [:show, :edit, :update, :destroy]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :snooze, :unsnooze]
   before_action :set_title
   before_action :set_form_dependencies, only: [:new, :edit, :create, :update]
 
@@ -50,6 +50,16 @@ class SeriesController < ApplicationController
     redirect_to series_index_path
   end
 
+  def snooze
+    @series.update(snoozed_at: Time.current)
+    redirect_back fallback_location: series_index_path
+  end
+
+  def unsnooze
+    @series.update(snoozed_at: nil)
+    redirect_back fallback_location: series_index_path
+  end
+
   private
 
   def set_form_dependencies
@@ -68,6 +78,6 @@ class SeriesController < ApplicationController
   end
 
   def series_params
-    params.require(:series).permit(:name, :description, :year, :genre_id, :cover_image, :comments, :seen, actor_ids: [])
+    params.require(:series).permit(:name, :description, :year, :genre_id, :cover_image, :comments, :seen, :imdb_id, actor_ids: [])
   end
 end

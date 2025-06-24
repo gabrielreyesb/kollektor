@@ -16,11 +16,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  root 'home#index'  # Collection selector dashboard
+  root to: redirect('/music')  # Redirect root to music collection
   get 'music', to: 'music#index'  # Music collection home
   get 'series_collection', to: 'series_collection#index' # Series collection home
   get 'tv_shows', to: redirect('/series_collection')
-  resources :series
+  resources :series do
+    member do
+      patch :snooze
+      patch :unsnooze
+    end
+  end
   resources :actors
   
   resources :genres
