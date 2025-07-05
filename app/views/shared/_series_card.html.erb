@@ -18,7 +18,8 @@
       </p>
       <div class="series-card-actions">
         <%= link_to series.imdb_search_url, target: "_blank", rel: "noopener", class: "btn btn-sm btn-warning btn-imdb", data: { turbo: false } do %>
-          <i class="bi bi-film"></i> IMDB
+          <i class="bi bi-film"></i>
+          <span class="btn-label">IMDB</span>
         <% end %>
         <% unless series.seen? %>
           <%= form_with(url: series_path(series), method: :patch, local: true, class: '', style: 'margin-left: 0.5rem;' ) do %>
@@ -31,11 +32,13 @@
         <% end %>
         <% if series.snoozed_at.present? %>
           <%= button_to unsnooze_series_path(series), method: :patch, class: "btn btn-sm btn-outline-info ms-2", form: { data: { turbo: false } } do %>
-            <i class="bi bi-alarm"></i> Unsnooze
+            <i class="bi bi-alarm"></i>
+            <span class="btn-label">Unsnooze</span>
           <% end %>
         <% else %>
           <%= button_to snooze_series_path(series), method: :patch, class: "btn btn-sm btn-info ms-2", form: { data: { turbo: false } } do %>
-            <i class="bi bi-alarm"></i> Snooze
+            <i class="bi bi-alarm"></i>
+            <span class="btn-label">Snooze</span>
           <% end %>
         <% end %>
       </div>

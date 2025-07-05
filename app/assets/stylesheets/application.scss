@@ -515,11 +515,12 @@ body {
 
 .series-poster-img-wrapper {
   width: 100%;
-  flex: 1;
-  min-height: 500px;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   background: #222;
   position: relative;
+  min-height: unset;
+  height: auto;
 }
 
 .series-poster-img {
@@ -537,4 +538,27 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
+}
+
+@media (max-width: 576px) {
+  .series-poster-img-wrapper {
+    aspect-ratio: 3 / 4;
+  }
+  .btn-label {
+    display: none !important;
+  }
+}
+
+/* Fix for card overlap in series/movies index view */
+.row.g-3 > [class^="col-"] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.series-poster-card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px; // Adjust as needed for your design
 }

@@ -29,10 +29,20 @@ class Album < ApplicationRecord
   # Returns albums ordered by likes count, strongly favoring those with fewer likes
   # The formula gives much higher weight to albums with zero likes
   scope :weighted_by_likes, -> {
-    # Order by a combination of likes_count (primary) and random factor (secondary)
+    # Order by likes_count first (primary), then by random (secondary)
     # This ensures albums with 0 likes always come before those with more likes,
     # and within each likes_count group, the order is random
-    order(Arel.sql("likes_count ASC, RANDOM()"))
+    # Use database-specific random function for better compatibility
+    if connection.adapter_name.downcase.include?('sqlite')
+      order(:likes_count).order('RANDOM()')
+    elsif connection.adapter_name.downcase.include?('postgresql')
+      order(:likes_count).order('RANDOM()')
+    elsif connection.adapter_name.downcase.include?('mysql')
+      order(:likes_count).order('RAND()')
+    else
+      # Fallback for other databases
+      order(:likes_count)
+    end
   }
 
   def increment_likes

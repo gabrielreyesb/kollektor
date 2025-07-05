@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
   before_action :check_daily_mood
+  include MusicSidebarData
 
   def index
     # If user is not logged in, show a welcome page
@@ -47,7 +48,7 @@ class HomeController < ApplicationController
     # Get 4 random albums, favoring less liked ones
     4.times do
       # Get any random album we haven't selected yet, favoring less liked ones
-      album = Album.includes(:author, :genre).with_attached_cover_image
+      album = current_user.albums.includes(:author, :genre).with_attached_cover_image
                   .where.not(id: recommended_albums.map(&:id))
                   .weighted_by_likes
                   .first
