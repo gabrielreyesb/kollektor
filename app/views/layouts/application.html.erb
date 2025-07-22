@@ -47,16 +47,30 @@
           <div class="main-content">
             <!-- Navbar -->
             <nav class="navbar navbar-dark bg-primary fixed-top d-md-none">
-              <div class="container-fluid">
-                <button class="navbar-toggler border-0" 
-                        type="button" 
-                        aria-label="Toggle navigation"
-                        data-action="sidebar#toggle">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-brand">
-                  <%= image_tag "logo.png", style: "height: 24px; width: auto;" %>
+              <div class="container-fluid d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                  <button class="navbar-toggler border-0 me-2" 
+                          type="button" 
+                          aria-label="Toggle navigation"
+                          data-action="sidebar#toggle">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="d-flex align-items-center">
+                    <%= image_tag "logo.png", style: "height: 24px; width: auto;" %>
+                  </div>
                 </div>
+                
+                <!-- Get Lucky Button in navbar -->
+                <% if controller_name == 'music' && action_name == 'index' %>
+                  <div class="d-flex align-items-center">
+                    <%= link_to get_lucky_path, 
+                        class: "btn btn-light btn-sm",
+                        style: "border-radius: 20px; font-size: 0.8rem; padding: 0.25rem 0.5rem;" do %>
+                      <i class="bi bi-shuffle"></i>
+                      <span class="d-none d-sm-inline ms-1">Get Lucky</span>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
             </nav>
 
@@ -94,17 +108,7 @@
               <%= render 'shared/due_snooze_reminders', due_snooze_reminders: @due_snooze_reminders %>
             <% end %>
 
-            <!-- Get Lucky Button -->
-            <% if controller_name == 'music' && action_name == 'index' %>
-              <div class="get-lucky-container">
-                <%= link_to get_lucky_path, 
-                    class: "btn btn-primary btn-get-lucky shadow-lg",
-                    style: "border-radius: 50px; font-weight: bold;" do %>
-                  <i class="bi bi-shuffle me-1"></i>
-                  <span class="d-none d-sm-inline">Get Lucky!</span>
-                <% end %>
-              </div>
-            <% end %>
+
 
             <%= yield %>
           </div>

@@ -1,12 +1,19 @@
 <div class="container-fluid">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <% if params[:genre_id].blank? && params[:author_id].blank? && params[:album_id].blank? %>
-        <h1 class="h2">Latest added</h1>
-      <% end %>
-    </div>
-    <div>
-      <%= link_to "Add Album", new_album_path, class: "btn btn-primary" %>
+  <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <% if params[:genre_id].blank? && params[:author_id].blank? && params[:album_id].blank? %>
+          <h1 class="h2">Latest added</h1>
+        <% end %>
+      </div>
+      <div class="d-none d-md-block">
+        <%= link_to get_lucky_path, 
+            class: "btn btn-primary",
+            style: "border-radius: 25px; font-weight: bold;" do %>
+          <i class="bi bi-shuffle me-2"></i>
+          Get Lucky!
+        <% end %>
+      </div>
     </div>
   </div>
 
