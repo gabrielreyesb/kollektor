@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   root to: redirect('/music')  # Redirect root to music collection
   get 'music', to: 'music#index'  # Music collection home
+  get 'music/load_more', to: 'music#load_more'  # Load more albums for infinite scroll
   get 'series_collection', to: 'series_collection#index' # Series collection home
   get 'tv_shows', to: redirect('/series_collection')
   resources :series do

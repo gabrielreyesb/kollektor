@@ -2,6 +2,29 @@ class MusicController < ApplicationController
   include MusicSidebarData
 
   def index
+    load_albums
+    
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append("albums-grid", partial: "albums")
+      end
+    end
+  end
+
+  def load_more
+    load_albums
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.append("albums-grid", partial: "albums")
+      end
+    end
+  end
+
+  private
+
+  def load_albums
     # Start with a base query that includes the necessary associations
     base_query = current_user.albums.includes(:author, :genre).with_attached_cover_image
 
@@ -17,8 +40,6 @@ class MusicController < ApplicationController
     if params[:album_id].present?
       base_query = base_query.where(id: params[:album_id]) 
     end
-    
-
 
     # Apply ordering based on filters
     @albums = if params[:author_id].present?
@@ -29,10 +50,12 @@ class MusicController < ApplicationController
                 base_query.order('albums.created_at DESC')
               end
 
-    # Limit results if no filters are applied
-    if !params[:genre_id].present? && !params[:author_id].present? && !params[:album_id].present?
-      @albums = @albums.limit(24)
-    end
+    # Apply pagination
+    page = params[:page]&.to_i || 1
+    per_page = 20
+    
+    @albums = @albums.offset((page - 1) * per_page).limit(per_page)
+    @has_more = base_query.count > (page * per_page)
 
     # Set title variables for the view
     @title = get_title
