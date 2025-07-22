@@ -4,6 +4,12 @@
       <div>
         <% if params[:genre_id].blank? && params[:author_id].blank? && params[:album_id].blank? %>
           <h1 class="h2">Latest added</h1>
+        <% elsif params[:genre_id].present? %>
+          <h1 class="h2"><%= @genre&.name || 'Genre' %></h1>
+        <% elsif params[:author_id].present? %>
+          <h1 class="h2"><%= @author&.name || 'Author' %></h1>
+        <% elsif params[:album_id].present? %>
+          <h1 class="h2">Album Details</h1>
         <% end %>
       </div>
       <div class="d-none d-md-block">
