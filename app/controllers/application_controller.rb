@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :set_due_snooze_reminders
+  before_action :set_notifications, if: -> { user_signed_in? && ['series', 'series_collection', 'actors'].include?(controller_name) }
   # before_action :set_sidebar_data, unless: :devise_controller?
 
   private
@@ -17,5 +18,10 @@ class ApplicationController < ActionController::Base
     else
       @due_snooze_reminders = Series.none
     end
+  end
+
+  def set_notifications
+    @notifications = current_user.notifications.order(created_at: :desc).limit(10)
+    @unread_notifications_count = current_user.notifications.where(read: false).count
   end
 end
