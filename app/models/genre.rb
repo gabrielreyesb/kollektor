@@ -16,4 +16,9 @@ class Genre < ApplicationRecord
   scope :by_collection_type, ->(collection_type_name) {
     joins(:collection_type).where(collection_types: { name: collection_type_name })
   }
+  
+  # Fallback scope when collection_type doesn't exist
+  scope :with_collection_type, -> {
+    joins(:collection_type)
+  }
 end 

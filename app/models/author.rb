@@ -14,6 +14,15 @@ class Author < ApplicationRecord
     where("LOWER(authors.name) LIKE :query OR LOWER(authors.description) LIKE :query", query: "%#{query.downcase}%")
   }
   
+  scope :by_collection_type, ->(collection_type_name) {
+    joins(genre: :collection_type).where(collection_types: { name: collection_type_name })
+  }
+  
+  # Fallback scope when collection_type doesn't exist
+  scope :with_genre, -> {
+    joins(:genre)
+  }
+  
   private
     def image_attached?
       image.attached?
