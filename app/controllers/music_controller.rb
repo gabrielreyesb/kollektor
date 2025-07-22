@@ -17,6 +17,8 @@ class MusicController < ApplicationController
     if params[:album_id].present?
       base_query = base_query.where(id: params[:album_id]) 
     end
+    
+
 
     # Apply ordering based on filters
     @albums = if params[:author_id].present?
