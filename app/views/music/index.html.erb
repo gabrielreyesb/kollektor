@@ -35,4 +35,101 @@
       </div>
     </div>
   <% end %>
+</div>
+<<<<<<< HEAD
+<div class="container-fluid" data-controller="infinite-scroll" data-infinite-scroll-has-more-value="<%= @has_more %>">
+  <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <% if params[:genre_id].blank? && params[:author_id].blank? && params[:album_id].blank? %>
+          <h1 class="h2">Latest added</h1>
+        <% elsif params[:genre_id].present? %>
+          <h1 class="h2"><%= @genre&.name || 'Genre' %></h1>
+        <% elsif params[:author_id].present? %>
+          <h1 class="h2"><%= @author&.name || 'Author' %></h1>
+        <% elsif params[:album_id].present? %>
+          <h1 class="h2">Album Details</h1>
+        <% end %>
+=======
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <% if params[:genre_id].blank? && params[:author_id].blank? && params[:album_id].blank? %>
+        <h1 class="h2">Latest added</h1>
+      <% end %>
+    </div>
+    <div>
+      <%= link_to "Add Album", new_album_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <% @albums.each do |album| %>
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="card h-100">
+          <%= link_to album_path(album) do %>
+            <% if album.cover_image.attached? %>
+              <%= image_tag album.cover_image, class: "card-img-top", loading: "lazy", style: "aspect-ratio: 1; object-fit: cover;" %>
+            <% else %>
+              <div class="bg-light d-flex align-items-center justify-content-center" style="aspect-ratio: 1;">
+                <i class="bi bi-disc text-muted" style="font-size: 2rem;"></i>
+              </div>
+            <% end %>
+          <% end %>
+          <div class="card-body p-2">
+            <!-- Album title and likes are always visible -->
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <h6 class="card-title mb-0 text-truncate"><%= album.name %></h6>
+              <small class="text-white ms-2">
+                <i class="bi bi-headphones"></i>
+                <span id="likes-count-<%= album.id %>"><%= album.likes_count %></span>
+              </small>
+            </div>
+            
+            <p class="card-text text-muted small mb-2">
+              <i class="bi bi-music-note me-1"></i><%= album.genre.name %> •
+              <i class="bi bi-person me-1"></i><%= album.author.name %> •
+              <i class="bi bi-calendar me-1"></i><%= album.year %>
+            </p>
+          </div>
+
+          <div class="card-footer bg-transparent border-top-0">
+            <div class="btn-group btn-group-sm w-100">
+              <%= link_to edit_album_path(album), class: "btn btn-outline-primary" do %>
+                <i class="bi bi-pencil"></i>
+              <% end %>
+              <%= link_to album, 
+                  class: "btn btn-outline-danger",
+                  data: { turbo_method: :delete, 
+                          turbo_confirm: "Are you sure?" } do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+>>>>>>> 4ae0691 (Corrección a filtros y likes)
+      </div>
+      <div class="d-none d-md-block">
+        <%= link_to get_lucky_path, 
+            class: "btn btn-primary",
+            style: "border-radius: 25px; font-weight: bold;" do %>
+          <i class="bi bi-shuffle me-2"></i>
+          Get Lucky!
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3" id="albums-grid">
+    <%= render 'albums' %>
+  </div>
+  
+  <!-- Infinite scroll trigger -->
+  <% if @has_more %>
+    <div class="text-center mt-4" id="load-more-trigger" data-infinite-scroll-target="trigger">
+      <div class="spinner-border text-primary" role="status" style="display: none;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  <% end %>
 </div> 

@@ -2,6 +2,7 @@
   <%= button_to api_album_rate_path(album), 
       method: :post,
       class: "btn btn-sm btn-outline-danger",
+      data: { disable_with: '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' },
       form: { 
         data: { turbo: true },
         class: "d-inline-block"

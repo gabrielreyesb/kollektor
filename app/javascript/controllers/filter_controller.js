@@ -15,8 +15,8 @@ export default class extends Controller {
     const value = event.target.value
     const type = this.filterTypeValue
     
-    // Always start with the root path instead of current URL
-    let url = new URL(window.location.origin)
+    // Always start with the music collection path to preserve query params
+    let url = new URL('/music', window.location.origin)
     
     if (type === 'genre_id') {
       // Only set genre_id if it has a value
